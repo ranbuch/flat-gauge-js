@@ -42,8 +42,14 @@ export class Icon {
         // image.style.top = `calc(50% - ${-Math.cos(deg * (Math.PI / 180)) * options.dimensions.height}px)`;
         // image.style.top = '50%';
         // image.style.left = '50%';
-        image.style.left = `calc(50% - ${options.dimensions.width / 2}px)`;
-        image.style.top = `calc(50% - ${options.dimensions.height}px)`;
+        if (typeof options.dimensions.top === 'undefined')
+            options.dimensions.top = 0;
+        if (typeof options.dimensions.left === 'undefined')
+            options.dimensions.left = 0;
+        var subFromLeft = (options.dimensions.width / 2) + options.dimensions.left;
+        image.style.left = `calc(50% - ${subFromLeft}px)`;
+        var subFromTop = (options.dimensions.height / 2) + options.dimensions.top;
+        image.style.top = `calc(50% - ${subFromTop}px)`;
         image.style.transitionDuration = options.animationDuration + 'ms';
         image.style.opacity = options.opacity;
         image.src = options.src;

@@ -5,12 +5,20 @@ window.addEventListener('load', function () {
     title: {
       text: 'Tune'
     },
-    showIcon: false,
+    showIcon: true,
     showEdges: true,
     needleOptions: {
       minMaxVal: { value: -10, min: 0, max: 0 }
     },
-    hollowEdges: 'Right'
+    hollowEdges: 'Right',
+    icon: {
+      src: "https://capitaliseprodstorage.blob.core.windows.net/app-static/breaks_above_big.svg",
+      dimensions: {
+        width: 20,
+        height :20,
+        top: 4
+      }
+    }
   });
 
   var range = document.getElementById('range');
