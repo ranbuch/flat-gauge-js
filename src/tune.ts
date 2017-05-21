@@ -123,7 +123,6 @@ export class Tune {
                 animationDuration: animationDuration,
                 degree: 50,
                 radius: defRadius,
-                // src: 'https://cdn.hexa3d.io/hotlink-ok/capitalise/userpics_all/1.jpg',
                 src: '',
                 dimensions: {
                     width: 25,
@@ -163,7 +162,8 @@ export class Tune {
 
     setNeedle() {
         this.needleOptions = this.common.extend(this.options.needleOptions, this.needleOptions);
-        this.needleOptions.color = this.common.isInRange(this.options.needleOptions.minMaxVal, this.options.hollowEdges) ? this.options.colors.active : this.options.colors.default;
+        if (!this.options.needleOptions.color)
+            this.needleOptions.color = this.common.isInRange(this.options.needleOptions.minMaxVal, this.options.hollowEdges) ? this.options.colors.active : this.options.colors.default;
         if (this.options.needleOptions.minMaxVal.value > 100 || this.options.needleOptions.minMaxVal.value < 0)
             this.needleOptions.color = this.options.colors.inactive;
         else if (this.options.hideBottom) {
