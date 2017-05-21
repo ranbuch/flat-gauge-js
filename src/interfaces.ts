@@ -102,9 +102,9 @@ export interface IconOptions {
     dimensions: {
         width: number;
         height: number;
-        top?: number;
-        left?: number;
     },
+    top?: number;
+    left?: number;
     opacity: number;
 }
 

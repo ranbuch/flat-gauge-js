@@ -15,9 +15,9 @@ window.addEventListener('load', function () {
       src: "https://capitaliseprodstorage.blob.core.windows.net/app-static/breaks_above_big.svg",
       dimensions: {
         width: 20,
-        height :20,
-        top: 4
-      }
+        height :20
+      },
+      top: 4
     }
   });
 
