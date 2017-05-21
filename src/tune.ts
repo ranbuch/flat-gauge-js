@@ -129,6 +129,8 @@ export class Tune {
                     width: 25,
                     height: 25
                 },
+                top: 0,
+                left: 0,
                 opacity: 1
             },
             colors: colors,
