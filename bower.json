@@ -1,0 +1,24 @@
+{
+  "name": "flat-gauge-js",
+  "description": "a flat design gauges js library",
+  "main": "./dist/bundle.js",
+  "authors": [
+    "Ran Buchnik <ranbuch@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "gauge",
+    "javascript",
+    "library",
+    "flat",
+    "design"
+  ],
+  "homepage": "https://github.com/ranbuch/flat-gauge-js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
