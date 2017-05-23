@@ -53,6 +53,10 @@ export class Icon {
         image.style.transitionDuration = options.animationDuration + 'ms';
         image.style.opacity = options.opacity;
         image.src = options.src;
+        if (image.src)
+            image.style.display = 'inline-block';
+        else
+            image.style.display = 'none';
 
         let scalar = options.radius - (options.dimensions.height / 2), xVector, yVector;
         let deg = (options.degree - 50) * 3.6;

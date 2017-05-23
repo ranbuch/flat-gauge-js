@@ -103,7 +103,7 @@ setTimeout(() => {
     animationDuration: number;
     radius: number;
     showEdges: boolean;
-    hollowEdges: string;
+    hollowEdges: number; // ENUM: None = 0,Left = 1,Right = 2,Both = 3
     showIcon: boolean;
     hideBottom: boolean;
 }
