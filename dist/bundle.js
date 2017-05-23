@@ -1487,7 +1487,7 @@ var Tune = function () {
         if (this.icon) this.icon.update(this.iconOptions);else this.icon = new icon_1.Icon(this.iconOptions);
         var image = this.element.querySelector('[data-icon]');
         if (image) {
-            if (!this.options.showIcon) image.style.display = 'none';else image.style.display = 'inline-block';
+            if (!this.options.showIcon || !this.iconOptions.src) image.style.display = 'none';else image.style.display = 'inline-block';
         }
     };
     return Tune;

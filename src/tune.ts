@@ -212,7 +212,7 @@ export class Tune {
             this.icon = new Icon(this.iconOptions);
         let image = this.element.querySelector('[data-icon]');
         if (image) {
-            if (!this.options.showIcon) 
+            if (!this.options.showIcon || !this.iconOptions.src) 
                 image.style.display = 'none';
             else
                 image.style.display = 'inline-block';
