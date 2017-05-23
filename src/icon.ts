@@ -53,7 +53,7 @@ export class Icon {
         image.style.transitionDuration = options.animationDuration + 'ms';
         image.style.opacity = options.opacity;
         image.src = options.src;
-        if (image.src)
+        if (options.src)
             image.style.display = 'inline-block';
         else
             image.style.display = 'none';
