@@ -860,32 +860,34 @@ var Icon = function () {
     };
     Icon.prototype.setImage = function (options) {
         var image = this.element;
+        image.style.width = options.dimensions.width + 'px';
         image.style.height = options.dimensions.height + 'px';
-        // let deg = (options.degree - 75) * 3.6;
-        // image.style.left = `calc(50% - ${Math.sin(deg * (Math.PI / 180)) * options.dimensions.width}px)`;
-        // image.style.top = `calc(50% - ${-Math.cos(deg * (Math.PI / 180)) * options.dimensions.height}px)`;
-        // image.style.top = '50%';
-        // image.style.left = '50%';
         if (typeof options.top === 'undefined') options.top = 0;
         if (typeof options.left === 'undefined') options.left = 0;
         var subFromLeft = options.dimensions.width / 2 + options.left;
         image.style.left = "calc(50% - " + subFromLeft + "px)";
         var subFromTop = options.dimensions.height / 2 + options.top;
         image.style.top = "calc(50% - " + subFromTop + "px)";
-        image.style.transitionDuration = options.animationDuration + 'ms';
+        // image.style.transitionDuration = options.animationDuration + 'ms';
+        image.style.transitionDuration = '0ms';
         image.style.opacity = options.opacity;
         image.src = options.src;
         if (options.src) image.style.display = 'inline-block';else image.style.display = 'none';
-        var scalar = options.radius - options.dimensions.height / 2,
+        // let scalarX = options.radius - (options.dimensions.width / 2), scalarY = options.radius - (options.dimensions.height / 2), xVector, yVector;
+        var scalarX = options.radius,
+            scalarY = options.radius - options.dimensions.height / 2,
             xVector,
             yVector;
         var deg = (options.degree - 50) * 3.6;
-        xVector = Math.sin(deg * (Math.PI / 180)) * scalar;
-        yVector = -Math.cos(deg * (Math.PI / 180)) * scalar;
+        xVector = Math.sin(deg * (Math.PI / 180)) * scalarX;
+        yVector = -Math.cos(deg * (Math.PI / 180)) * scalarY;
+        console.log("sin: " + Math.sin(deg * (Math.PI / 180)) + ", xVector:" + xVector);
+        console.log("cos: " + Math.cos(deg * (Math.PI / 180)) + ", yVector:" + yVector);
+        // if (deg > 0)
+        // xVector += Math.sin(deg * (Math.PI / 180)) * ((options.dimensions.width / 2) + (options.top / 2));
+        // else
+        //     xVector -= Math.cos(deg * (Math.PI / 180)) * (options.dimensions.width / 2);
         image.style.transform = "translate3d(" + xVector + "px, " + yVector + "px, 0) rotate(" + deg + "deg)";
-        // deg = (options.degree) * 3.6;
-        // image.style.left = `calc(50% - ${(Math.sin(deg * (Math.PI / 180)) * (options.dimensions.width / 2)) - 12.5}px)`;
-        // image.style.top = `calc(50% - ${(Math.cos(deg * (Math.PI / 180)) * (options.dimensions.height / 2)) + 12.5}px)`;
     };
     Icon.prototype.getElement = function () {
         return this.element;

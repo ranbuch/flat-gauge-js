@@ -15,7 +15,7 @@ window.addEventListener('load', function () {
       src: "https://capitaliseprodstorage.blob.core.windows.net/app-static/breaks_above_big.svg",
       dimensions: {
         width: 20,
-        height :20
+        height: 20
       },
       top: 4
     }
@@ -26,8 +26,9 @@ window.addEventListener('load', function () {
   var rangeRight = document.getElementById('rangeRight');
   var hollowLeft = document.getElementById('hollowLeft');
   var hollowRight = document.getElementById('hollowRight');
+  var rangeIcon = document.getElementById('rangeIcon');
 
-  var getSideState = function() {
+  var getSideState = function () {
     var state = String(hollowLeft.checked) + String(hollowRight.checked);
     switch (state) {
       case 'falsefalse': {
@@ -48,9 +49,6 @@ window.addEventListener('load', function () {
   var update = function () {
     console.log(getSideState());
     window.tune.update({
-      iconOptions: {
-        degree: parseInt(range.value)
-      },
       edges: true,
       hideBottom: true,
       needleOptions: {
@@ -60,6 +58,19 @@ window.addEventListener('load', function () {
           min: parseInt(rangeLeft.value),
           max: parseInt(rangeRight.value)
         }
+      },
+      iconOptions: {
+        animationDuration: 500,
+        degree: parseInt(rangeIcon.value),
+        dimensions: {
+          height: 20,
+          width: 22
+        },
+        left: 0,
+        opacity: 1,
+        radius: 88,
+        src: "https://capitaliseprodstorage.blob.core.windows.net/app-static/breaks_above_big.svg",
+        top: 6
       },
       hollowEdges: getSideState()
     });
@@ -86,6 +97,11 @@ window.addEventListener('load', function () {
 
   hollowRight.addEventListener('change', function () {
     update();
+  }, false);
+
+  rangeIcon.addEventListener('change', function () {
+    update();
+    document.querySelector('#rangeIconNumber').value = rangeIcon.value;
   }, false);
 
 })
