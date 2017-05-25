@@ -60,13 +60,8 @@ export class Icon {
         let deg = (options.degree - 50) * 3.6;
         xVector = Math.sin(deg * (Math.PI / 180)) * scalarX;
         yVector = -Math.cos(deg * (Math.PI / 180)) * scalarY;
-        console.log("sin: " + Math.sin(deg * (Math.PI / 180)) + ", xVector:" + xVector);
-        console.log("cos: " + Math.cos(deg * (Math.PI / 180)) + ", yVector:" + yVector);
-        // if (deg > 0)
-            // xVector += Math.sin(deg * (Math.PI / 180)) * ((options.dimensions.width / 2) + (options.top / 2));
-            
-        // else
-        //     xVector -= Math.cos(deg * (Math.PI / 180)) * (options.dimensions.width / 2);
+        // console.log("sin: " + Math.sin(deg * (Math.PI / 180)) + ", xVector:" + xVector);
+        // console.log("cos: " + Math.cos(deg * (Math.PI / 180)) + ", yVector:" + yVector);
         image.style.transform = `translate3d(${xVector}px, ${yVector}px, 0) rotate(${deg}deg)`;
     }
 
