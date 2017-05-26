@@ -18,6 +18,10 @@ include script:
 <script type="text/javascript" src="node_modules/flat-gauge-js/dist/bundle.js"></script>
 ```
 
+## Examples
+[link](https://ranbuch.github.io/flat-gauge-js/)
+
+
 ## Spinner Example
 ```javascript
 var target = document.getElementById('target');

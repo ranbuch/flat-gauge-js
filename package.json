@@ -1,6 +1,6 @@
 {
   "name": "flat-gauge-js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "a flat design gauges js library",
   "main": "./dist/main.js",
   "scripts": {
