@@ -45,7 +45,7 @@
 
     <!-- Page Contents -->
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui inverted vertical masthead center aligned segment main-bg">
 
             <!--<div class="ui container">
                 <div class="ui large secondary inverted pointing menu">
@@ -61,7 +61,7 @@
                 </div>
             </div>-->
 
-            <div class="ui text container center-vertical">
+            <div class="ui text container center-vertical float-right">
                 <h1 class="ui inverted header">
                     Flat-Gauge-JS
                 </h1>
@@ -75,7 +75,11 @@
             <div class="ui middle aligned stackable grid container">
                 <div class="row">
                     <div class="eight wide column text-center">
-                        <h3 class="ui header">spinner</h3>
+                        <h3 class="ui header">Spinner</h3>
+                        <code>
+                            var spinner = new FlatGauge.Spinner(element, options);
+                        </code>
+                        <br><br><br>
                         <div class="ui large button" id="toggleSpinner">toggle spinner</div>
                     </div>
                     <div class="six wide right floated column">
@@ -83,52 +87,143 @@
                         <!--<img src="assets/images/wireframe/white-image.png" class="ui large bordered rounded image">-->
                     </div>
                 </div>
-                <!--<div class="row">
-                    <div class="center aligned column">
-                        <a class="ui huge button">Check Them Out</a>
+                <div class="row">
+                    <div class="column">
+                        <h4 class="ui horizontal header divider">
+                            <a href="#">Options:</a>
+                        </h4>
+                        <code>
+                            {
+                                rotationSpeed: 1000,
+                                title: {
+                                    text: 'Spinning'
+                                },
+                                highlight: true
+                            }
+                        </code>
                     </div>
-                </div>-->
+                </div>
             </div>
         </div>
 
-
-        <!--<div class="ui vertical stripe quote segment">
-            <div class="ui equal width stackable internally celled grid">
-                <div class="center aligned row">
-                    <div class="column">
-                        <h3>"What a Company"</h3>
-                        <p>That is what they all say about us</p>
+        
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column text-center">
+                        <h3>Tune</h3>
+                        <code>
+                            var tune = new FlatGauge.Tune(element, options);
+                        </code>
+                        <div>
+                            needle
+                            <input type="range" value="50" id="tuneRange" min="0" max="100">
+                            <br>
+                            <input type="number" disabled id="rangeNumber">
+                        </div>
+                        <div>
+                            left
+                            <input type="range" value="30" id="tuneRangeLeft" min="0" max="100">
+                            <input type="checkbox" id="tuneHollowLeft">
+                            <br>
+                            <input type="number" disabled id="rangeLeftNumber">
+                        </div>
+                        <div>
+                            rigth
+                            <input type="range" value="70" id="tuneRangeRight" min="0" max="100">
+                            <input type="checkbox" id="tuneHollowRight">
+                            <br>
+                            <input type="number" disabled id="rangeRightNumber">
+                        </div>
+                        <div>
+                            icon
+                            <input type="range" value="70" id="tuneRangeIcon" min="0" max="100">
+                            <input type="checkbox" id="tuneRangeIconEnabled">
+                            <br>
+                            <input type="number" disabled id="rangeIconNumber">
+                        </div>
                     </div>
+                    <div class="six wide right floated column">
+                        <div id="tuneTarget"></div>
+                    </div>
+                </div>
+                <div class="row" id="tuneCodeWrap">
                     <div class="column">
-                        <h3>"I shouldn't have gone with their competitor."</h3>
-                        <p>
-                            <img src="assets/images/avatar/nan.jpg" class="ui avatar image"> <b>Nan</b> Chief Fun Officer
-                            Acme Toys
-                        </p>
+                        <h4 class="ui horizontal header divider">
+                            <a href="#">Options:</a>
+                        </h4>
+                        <code id="tuneCode"></code>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="ui vertical stripe segment">
-            <div class="ui text container">
-                <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
-                <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing
-                    by providing massive amounts of whitespace and generic content that can seem massive, monolithic and
-                    worth your attention.</p>
-                <a class="ui large button">Read More</a>
-                <h4 class="ui horizontal header divider">
-                    <a href="#">Case Studies</a>
-                </h4>
-                <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
-                <p>Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but its really true.
-                    It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
-                <a class="ui large button">I'm Still Quite Interested</a>
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column text-center">
+                        <h3>Timer</h3>
+                        <code>
+                            var timer = new FlatGauge.Timer(element, options);
+                        </code>
+                    </div>
+                    <div class="six wide right floated column">
+                        <div id="timerTarget"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <h4 class="ui horizontal header divider">
+                            <a href="#">Options:</a>
+                        </h4>
+                        <code>
+                            {
+            animationDuration: 500,
+            time: {
+                hours: 2,
+                minutes: 45,
+                seconds: 3
+            },
+            percentage: 33
+        }
+                        </code>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column text-center">
+                        <h3>AM-PM (not ready yet!)</h3>
+                        <code>
+                            var ampm = new FlatGauge.AmPm(element, options);
+                        </code>
+                    </div>
+                    <div class="six wide right floated column">
+                        <div id="ampmTarget"></div>
+                        <br><br>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <h4 class="ui horizontal header divider">
+                            <a href="#">Options:</a>
+                        </h4>
+                        <code>
+                            {
+                                rotationSpeed: 1000
+                            }
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="ui inverted vertical footer segment">
+        
+
+        <!--<div class="ui inverted vertical footer segment">
             <div class="ui container">
                 <div class="ui stackable inverted divided equal height stackable grid">
                     <div class="three wide column">
