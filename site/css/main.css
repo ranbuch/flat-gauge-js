@@ -23,6 +23,8 @@ code, code * {
     background: url('../images/bg.jpg');
     background-repeat: no-repeat;
     background-size: 100%;
+    background-position: center;
+    background-color: #303032
 }
 
 .float-right {
@@ -31,4 +33,14 @@ code, code * {
 
 body .ui.grid>.row {
     padding: 3rem 0;
+}
+
+.center-me, .ui.card.center-me {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.diameter {
+    width: 176px;
 }

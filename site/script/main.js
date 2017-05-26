@@ -1,7 +1,7 @@
 window.addEventListener('load', function () {
     let initSpinner = function () {
         var spinner = new FlatGauge.Spinner(document.getElementById('spinnerTarget'), {
-            rotationSpeed: 1000,
+            rotationSpeed: 5000,
             title: {
                 text: 'Spinning'
             },
@@ -156,7 +156,11 @@ window.addEventListener('load', function () {
 
     var initAmpm = () => {
         var ampm = new FlatGauge.AmPm(document.getElementById('ampmTarget'), {
-            rotationSpeed: 1000
+            rotationSpeed: 1000,
+            fromTo: {
+                from: '1:52',
+                to: '15:20'
+            },
         });
     };
 

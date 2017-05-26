@@ -75,6 +75,37 @@
             <div class="ui middle aligned stackable grid container">
                 <div class="row">
                     <div class="eight wide column text-center">
+                        <div class="ui card center-me">
+                            <div class="content">
+                                <div class="header">No jQuery required</div>
+                                <div class="meta">standalone</div>
+                                <!--<div class="description">
+                                    <p>
+                                       </p>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="eight wide column text-center">
+                        <div class="ui card center-me">
+                            <div class="content">
+                                <div class="header">No d3 required</div>
+                                <div class="meta">standalone</div>
+                                <!--<div class="description">
+                                    <p>
+                                       </p>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column text-center">
                         <h3 class="ui header">Spinner</h3>
                         <code>
                             var spinner = new FlatGauge.Spinner(element, options);
@@ -82,8 +113,8 @@
                         <br><br><br>
                         <div class="ui large button" id="toggleSpinner">toggle spinner</div>
                     </div>
-                    <div class="six wide right floated column">
-                        <div id="spinnerTarget"></div>
+                    <div class="eight wide right floated column">
+                        <div class="center-me diameter" id="spinnerTarget"></div>
                         <!--<img src="assets/images/wireframe/white-image.png" class="ui large bordered rounded image">-->
                     </div>
                 </div>
@@ -93,7 +124,7 @@
                             <a href="#">Options:</a>
                         </h4>
                         <code>
-                            {
+                            var options = {
                                 rotationSpeed: 1000,
                                 title: {
                                     text: 'Spinning'
@@ -101,12 +132,16 @@
                                 highlight: true
                             }
                         </code>
+                        <br>
+                        <code>
+                            spinner.update(options);
+                        </code>
                     </div>
                 </div>
             </div>
         </div>
 
-        
+
         <div class="ui vertical stripe segment">
             <div class="ui middle aligned stackable grid container">
                 <div class="row">
@@ -143,8 +178,8 @@
                             <input type="number" disabled id="rangeIconNumber">
                         </div>
                     </div>
-                    <div class="six wide right floated column">
-                        <div id="tuneTarget"></div>
+                    <div class="eight wide right floated column">
+                        <div class="center-me" id="tuneTarget"></div>
                     </div>
                 </div>
                 <div class="row" id="tuneCodeWrap">
@@ -152,7 +187,14 @@
                         <h4 class="ui horizontal header divider">
                             <a href="#">Options:</a>
                         </h4>
+                        <code>
+                            var options = 
+                        </code>
                         <code id="tuneCode"></code>
+                        <br>
+                        <code>
+                            tune.update(options);
+                        </code>
                     </div>
                 </div>
             </div>
@@ -167,8 +209,8 @@
                             var timer = new FlatGauge.Timer(element, options);
                         </code>
                     </div>
-                    <div class="six wide right floated column">
-                        <div id="timerTarget"></div>
+                    <div class="eight wide right floated column">
+                        <div class="center-me" id="timerTarget"></div>
                     </div>
                 </div>
                 <div class="row">
@@ -178,19 +220,23 @@
                         </h4>
                         <code>
                             {
-            animationDuration: 500,
-            time: {
-                hours: 2,
-                minutes: 45,
-                seconds: 3
-            },
-            percentage: 33
-        }
+                                animationDuration: 500,
+                                time: {
+                                    hours: 2,
+                                    minutes: 45,
+                                    seconds: 3
+                                },
+                                percentage: 33
+                            }
                         </code>
                     </div>
                 </div>
             </div>
         </div>
+
+        
+
+
 
         <div class="ui vertical stripe segment">
             <div class="ui middle aligned stackable grid container">
@@ -201,8 +247,8 @@
                             var ampm = new FlatGauge.AmPm(element, options);
                         </code>
                     </div>
-                    <div class="six wide right floated column">
-                        <div id="ampmTarget"></div>
+                    <div class="eight wide right floated column">
+                        <div class="center-me" id="ampmTarget"></div>
                         <br><br>
                     </div>
                 </div>
@@ -221,7 +267,7 @@
             </div>
         </div>
 
-        
+
 
         <div class="ui inverted vertical footer segment">
             <div class="ui container">
@@ -239,6 +285,13 @@
                             <a href="https://www.npmjs.com/package/flat-gauge-js" class="item">module</a>
                         </div>
                     </div>
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">bower</h4>
+                        <div class="ui inverted link list">
+                            <a href="https://libraries.io/bower/flat-gauge-js" class="item">module</a>
+                        </div>
+                    </div>
+
                     <div class="seven wide column">
                         <h4 class="ui inverted header">license</h4>
                         <p>MIT</p>
