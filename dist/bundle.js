@@ -580,7 +580,7 @@ var Common = function () {
         };
     };
     Common.prototype.getNeedleStyle = function (radius, arcNeedlePercentage, scale) {
-        if (typeof scale !== 'number') scale = 1;
+        if (typeof scale !== 'number') scale = 1.2;
         var deg = (arcNeedlePercentage - 50) * 3.6;
         return {
             'left': 'calc(50% - ' + radius / Common.needleWidthHeightRatio / 2 + 'px',
