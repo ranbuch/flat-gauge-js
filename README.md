@@ -209,16 +209,15 @@ var range = new FlatGauge.Range(target);
 ### Options
 ```javascript
 {
-    needleOptions?: NeedleOptions;
-    iconOptions?: IconOptions;
     colors?: ColorPalette;
+    minMaxVal: MinMaxVal;
     strokeWidth?: number;
-    // title?: InnerText;
     animationDuration?: number;
     radius: number;
     showEdges: boolean;
     hollowEdges?: SideState;
-    showIcon: boolean;
     hideBottom: boolean;
+    title?: InnerText;
+    highlight?: boolean;
 }
 ```
