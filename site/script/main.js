@@ -17,6 +17,18 @@ window.addEventListener('load', function () {
         }, false);
     };
 
+    let initRange = function () {
+        var range = new FlatGauge.Range(document.getElementById('rangeTarget'), {
+            title: {
+                text: 'range'
+            },
+            showEdges: false,
+            minMaxVal: { min: 25, max: 75 },
+            highlight: true,
+            hideBottom: true
+        });
+    };
+
     let initTune = function () {
         var tune = new FlatGauge.Tune(document.getElementById('tuneTarget'), {
             rotationSpeed: 1000,
@@ -166,6 +178,7 @@ window.addEventListener('load', function () {
 
     var init = function () {
         initSpinner();
+        initRange();
         initTune();
         initTimer();
         initAmpm();

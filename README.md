@@ -200,3 +200,25 @@ var ampm = new FlatGauge.AmPm(target);
     strokeWidth: number;
 }
 ```
+
+## Range Example
+```javascript
+var target = document.getElementById('target');
+var range = new FlatGauge.Range(target);
+```
+### Options
+```javascript
+{
+    needleOptions?: NeedleOptions;
+    iconOptions?: IconOptions;
+    colors?: ColorPalette;
+    strokeWidth?: number;
+    // title?: InnerText;
+    animationDuration?: number;
+    radius: number;
+    showEdges: boolean;
+    hollowEdges?: SideState;
+    showIcon: boolean;
+    hideBottom: boolean;
+}
+```

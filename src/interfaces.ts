@@ -78,6 +78,19 @@ export interface TuneOptions {
     hideBottom: boolean;
 }
 
+export interface RangeOptions {
+    colors?: ColorPalette;
+    minMaxVal: MinMaxVal;
+    strokeWidth?: number;
+    animationDuration?: number;
+    radius: number;
+    showEdges: boolean;
+    hollowEdges?: SideState;
+    hideBottom: boolean;
+    title?: InnerText;
+    highlight?: boolean;
+}
+
 export enum SideState {
     None,
     Left,
