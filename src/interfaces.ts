@@ -62,6 +62,7 @@ export interface NeedleOptions {
     radius: number;
     scale: number;
     animationDuration?: number;
+    disabled?: boolean;
 }
 
 export interface TuneOptions {
