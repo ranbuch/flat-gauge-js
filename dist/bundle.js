@@ -370,9 +370,9 @@ var Circle = function () {
         if (options.hideBottom) {
             startAngle = 33.334 * 3.6, endAngle = 66.667 * 3.6;
             d = this.describeArc(options.radius, options.radius, options.radius - options.strokeWidth / 2, startAngle, endAngle);
-            concealer.setAttributeNS(null, 'stroke-width', options.strokeWidth);
+            concealer.setAttributeNS(null, 'stroke-width', options.strokeWidth + 2);
             concealer.setAttributeNS(null, 'd', d);
-            concealer.style.strokeWidth = options.strokeWidth + 'px';
+            concealer.style.strokeWidth = options.strokeWidth + 2 + 'px';
             concealer.style.display = '';
             var bgColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
             if (!bgColor) bgColor = '#fff';
