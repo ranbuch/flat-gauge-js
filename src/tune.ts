@@ -115,7 +115,7 @@ export class Tune {
                     value: 55
                 },
                 color: colors.active,
-                scale: 1.1,
+                scale: 1.2,
                 radius: defRadius,
                 animationDuration: animationDuration,
                 disabled: false
