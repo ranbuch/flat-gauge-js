@@ -732,7 +732,8 @@ var Common = function () {
 }();
 Common.NameSpaceElements = ['svg', 'path', 'g'];
 Common.xmlns = "http://www.w3.org/2000/svg";
-Common.needleWidthHeightRatio = 9.107127839547825;
+// static needleWidthHeightRatio: number = 9.107127839547825;
+Common.needleWidthHeightRatio = 8.69322239126;
 exports.Common = Common;
 
 },{"./interfaces":6}],4:[function(require,module,exports){
@@ -939,7 +940,7 @@ var Needle = function () {
         this.element = this.common.jsonToHtml({
             type: 'div',
             attrs: {
-                'style': 'position: absolute;z-index: 40;transform-origin: 50% 85%;transform: scale(1.2);transition-duration: .5s; top: 0;',
+                'style': 'position: absolute;z-index: 40;transform-origin: 50% 85%;transform: scale(1.2);transition-duration: .5s; top: -4px;',
                 'data-needle': ''
             },
             children: [{

@@ -3,7 +3,8 @@ import { JsonToHtmlElement, RGBA, InnerText, ColorPalette, NeedleOptions, MinMax
 export class Common {
     static NameSpaceElements: Array<string> = ['svg', 'path', 'g'];
     static xmlns: string = "http://www.w3.org/2000/svg";
-    static needleWidthHeightRatio: number = 9.107127839547825;
+    // static needleWidthHeightRatio: number = 9.107127839547825;
+    static needleWidthHeightRatio: number = 8.69322239126;
     extend(src: any, dest: any, copy?: boolean): any {
         for (let i in src) {
             if (typeof src[i] === 'object') {
