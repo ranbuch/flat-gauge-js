@@ -306,7 +306,7 @@ var AmPm = function () {
                 animationDuration: animationDuration,
                 color: colors.active,
                 radius: radius,
-                scale: 1.1,
+                scale: 1.125,
                 minMaxVal: {
                     max: 3,
                     min: 14,
@@ -580,7 +580,7 @@ var Common = function () {
         };
     };
     Common.prototype.getNeedleStyle = function (radius, arcNeedlePercentage, scale) {
-        if (typeof scale !== 'number') scale = 1.2;
+        if (typeof scale !== 'number') scale = 1.125;
         var deg = (arcNeedlePercentage - 50) * 3.6;
         return {
             'left': 'calc(50% - ' + radius / Common.needleWidthHeightRatio / 2 + 'px',
@@ -940,7 +940,7 @@ var Needle = function () {
         this.element = this.common.jsonToHtml({
             type: 'div',
             attrs: {
-                'style': 'position: absolute;z-index: 40;transform-origin: 50% 85%;transform: scale(1.2);transition-duration: .5s; top: -4px;',
+                'style': 'position: absolute;z-index: 40;transform-origin: 50% 85%;transform: scale(1.125);transition-duration: .5s; top: -4px;',
                 'data-needle': ''
             },
             children: [{
@@ -1555,7 +1555,7 @@ var Tune = function () {
                     value: 55
                 },
                 color: colors.active,
-                scale: 1.2,
+                scale: 1.125,
                 radius: defRadius,
                 animationDuration: animationDuration,
                 disabled: false

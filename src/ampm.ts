@@ -406,7 +406,7 @@ export class AmPm {
                 animationDuration: animationDuration,
                 color: colors.active,
                 radius: radius,
-                scale: 1.1,
+                scale: 1.125,
                 minMaxVal: {
                     max: 3,
                     min: 14,

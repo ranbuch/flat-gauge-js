@@ -50,7 +50,7 @@ window.addEventListener('load', function () {
     console.log(getSideState());
     window.tune.update({
       edges: true,
-      hideBottom: false,
+      hideBottom: true,
       needleOptions: {
         edges: false,
         minMaxVal: {

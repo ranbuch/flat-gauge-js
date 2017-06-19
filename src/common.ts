@@ -146,7 +146,7 @@ export class Common {
 
     getNeedleStyle(radius: number, arcNeedlePercentage: number, scale: number) {
         if (typeof scale !== 'number')
-            scale = 1.2;
+            scale = 1.125;
         let deg = (arcNeedlePercentage - 50) * 3.6;
         return {
             'left': 'calc(50% - ' + ((radius / Common.needleWidthHeightRatio)) / 2 + 'px',
