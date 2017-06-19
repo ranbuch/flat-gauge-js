@@ -17,7 +17,7 @@ export class Needle {
             {
                 type: 'div',
                 attrs: {
-                    'style': 'position: absolute;z-index: 40;transform-origin: 50% 80%;transform: scale(1.2);transition-duration: .5s; top: 0;',
+                    'style': 'position: absolute;z-index: 40;transform-origin: 50% 85%;transform: scale(1.2);transition-duration: .5s; top: 0;',
                     'data-needle': ''
                 },
                 children: [
