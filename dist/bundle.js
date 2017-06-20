@@ -728,12 +728,12 @@ var Common = function () {
                 return interfaces_1.SideState.None;
         }
     };
+    Common.NameSpaceElements = ['svg', 'path', 'g'];
+    Common.xmlns = "http://www.w3.org/2000/svg";
+    // static needleWidthHeightRatio: number = 9.107127839547825;
+    Common.needleWidthHeightRatio = 8.69322239126;
     return Common;
 }();
-Common.NameSpaceElements = ['svg', 'path', 'g'];
-Common.xmlns = "http://www.w3.org/2000/svg";
-// static needleWidthHeightRatio: number = 9.107127839547825;
-Common.needleWidthHeightRatio = 8.69322239126;
 exports.Common = Common;
 
 },{"./interfaces":6}],4:[function(require,module,exports){
@@ -825,9 +825,9 @@ var Edges = function () {
     Edges.prototype.getRightElement = function () {
         return this.rightElement;
     };
+    Edges.AddToEdge = 4;
     return Edges;
 }();
-Edges.AddToEdge = 4;
 exports.Edges = Edges;
 
 },{"./common":3,"./interfaces":6}],5:[function(require,module,exports){

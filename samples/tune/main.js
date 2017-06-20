@@ -46,12 +46,18 @@ window.addEventListener('load', function () {
     }
   };
 
+  var isInRange = function(val, left, right) {
+    if (val >= left && val <= right) return true;
+    return false;
+  };
+
   var update = function () {
-    console.log(getSideState());
     window.tune.update({
       edges: true,
       hideBottom: true,
       needleOptions: {
+        scale: 1.25,
+        color: isInRange(range.value, rangeLeft.value, rangeRight.value) ? '#4CCEAD' : '#505050',
         edges: false,
         minMaxVal: {
           value: parseInt(range.value),
@@ -104,4 +110,5 @@ window.addEventListener('load', function () {
     document.querySelector('#rangeIconNumber').value = rangeIcon.value;
   }, false);
 
+  update();
 })
