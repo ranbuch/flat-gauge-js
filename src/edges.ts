@@ -7,6 +7,7 @@ export class Edges {
     private common: Common;
 
     static AddToEdge: number = 4;
+    static AddToEdgeHeight: number = 4;
 
     constructor(private options?: EdgesOptions) {
         this.common = new Common();
@@ -48,8 +49,8 @@ export class Edges {
     }
 
     setSpans(options: EdgesOptions) {
-        let height = (options.strokeWidth + Edges.AddToEdge) + 'px';
-        let top = 'calc(50% - ' + ((options.strokeWidth / 2) + (Edges.AddToEdge / 2)) + 'px)';
+        let height = (options.strokeWidth + Edges.AddToEdge + Edges.AddToEdgeHeight) + 'px';
+        let top = 'calc(50% - ' + ((options.strokeWidth / 2) + (Edges.AddToEdge / 2) + (Edges.AddToEdgeHeight / 2)) + 'px)';
         let leftStyle = 'calc(50% - ' + (Edges.AddToEdge / 2) + 'px)';
 
         let bgColor = this.common.getComputedStyleByParentRec(this.leftElement, 'backgroundColor');

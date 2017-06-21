@@ -774,8 +774,8 @@ var Edges = function () {
         this.setSpans(this.options);
     };
     Edges.prototype.setSpans = function (options) {
-        var height = options.strokeWidth + Edges.AddToEdge + 'px';
-        var top = 'calc(50% - ' + (options.strokeWidth / 2 + Edges.AddToEdge / 2) + 'px)';
+        var height = options.strokeWidth + Edges.AddToEdge + Edges.AddToEdgeHeight + 'px';
+        var top = 'calc(50% - ' + (options.strokeWidth / 2 + Edges.AddToEdge / 2 + Edges.AddToEdgeHeight / 2) + 'px)';
         var leftStyle = 'calc(50% - ' + Edges.AddToEdge / 2 + 'px)';
         var bgColor = this.common.getComputedStyleByParentRec(this.leftElement, 'backgroundColor');
         if (!bgColor) bgColor = '#fff';
@@ -826,6 +826,7 @@ var Edges = function () {
         return this.rightElement;
     };
     Edges.AddToEdge = 4;
+    Edges.AddToEdgeHeight = 4;
     return Edges;
 }();
 exports.Edges = Edges;
