@@ -52,10 +52,13 @@ window.addEventListener('load', function () {
   };
 
   var update = function () {
+    let animationDuration = 1500;
     window.tune.update({
       edges: true,
       hideBottom: true,
+      animationDuration: animationDuration,
       needleOptions: {
+        animationDuration: animationDuration,
         scale: 1.25,
         color: isInRange(range.value, rangeLeft.value, rangeRight.value) ? '#4CCEAD' : '#505050',
         edges: false,
@@ -66,7 +69,7 @@ window.addEventListener('load', function () {
         }
       },
       iconOptions: {
-        animationDuration: 500,
+        animationDuration: animationDuration,
         degree: parseInt(rangeIcon.value),
         dimensions: {
           height: 20,

@@ -982,6 +982,7 @@ var Needle = function () {
         var divStyle = this.common.getNeedleStyle(options.radius, options.minMaxVal.value, options.scale);
         div.style.left = divStyle.left;
         div.style.transform = divStyle.transform;
+        div.style.transitionDuration = options.animationDuration + 'ms';
     };
     Needle.prototype.getElement = function () {
         return this.element;
