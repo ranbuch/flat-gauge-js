@@ -68,9 +68,11 @@ export class Circle {
             concealer.setAttributeNS(null, 'd', d);
             concealer.style.strokeWidth = (options.strokeWidth + 2) + 'px';
             concealer.style.display = '';
-            let bgColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+            let bgColor = options.backgroundColor;
             if (!bgColor)
-                bgColor = '#fff';
+                bgColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+            if (!bgColor)
+                bgColor = '#ffffff';
             concealer.setAttributeNS(null, 'stroke', bgColor);
         }
         else

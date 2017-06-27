@@ -374,8 +374,9 @@ var Circle = function () {
             concealer.setAttributeNS(null, 'd', d);
             concealer.style.strokeWidth = options.strokeWidth + 2 + 'px';
             concealer.style.display = '';
-            var bgColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
-            if (!bgColor) bgColor = '#fff';
+            var bgColor = options.backgroundColor;
+            if (!bgColor) bgColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+            if (!bgColor) bgColor = '#ffffff';
             concealer.setAttributeNS(null, 'stroke', bgColor);
         } else concealer.style.display = 'none';
     };
@@ -553,7 +554,7 @@ var Common = function () {
         if (!elem) return null;
         var css = getComputedStyle(elem);
         var val = css[cssProp];
-        if (val) return val;
+        if (val && val != 'rgba(0, 0, 0, 0)') return val;
         return this.getComputedStyleByParentRec(elem.parentElement, cssProp);
     };
     // odd strokeWidth is not supported
@@ -1583,7 +1584,8 @@ var Tune = function () {
             showIcon: true,
             hollowEdges: interfaces_1.SideState.None,
             // title: this.common.setInnerTextDefaults(),
-            hideBottom: true
+            hideBottom: true,
+            backgroundColor: '#ffffff'
         };
     };
     Tune.prototype.setCircle = function () {

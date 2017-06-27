@@ -77,6 +77,7 @@ export interface TuneOptions {
     hollowEdges?: SideState;
     showIcon: boolean;
     hideBottom: boolean;
+    backgroundColor?: string;
 }
 
 export interface RangeOptions {

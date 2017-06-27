@@ -111,7 +111,7 @@ export class Common {
         if (!elem) return null;
         let css = getComputedStyle(elem) as any;
         let val = css[cssProp];
-        if (val) return val;
+        if (val && val != 'rgba(0, 0, 0, 0)') return val;
         return this.getComputedStyleByParentRec(elem.parentElement, cssProp);
     }
 

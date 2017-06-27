@@ -141,7 +141,8 @@ export class Tune {
             showIcon: true,
             hollowEdges: SideState.None,
             // title: this.common.setInnerTextDefaults(),
-            hideBottom: true
+            hideBottom: true,
+            backgroundColor: '#ffffff'
         } as TuneOptions;
     }
 
