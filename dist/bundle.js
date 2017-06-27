@@ -552,7 +552,7 @@ var Common = function () {
     Common.prototype.getComputedStyleByParentRec = function (elem, cssProp) {
         if (!elem) return null;
         var css = getComputedStyle(elem);
-        var val = css['cssProp'];
+        var val = css[cssProp];
         if (val) return val;
         return this.getComputedStyleByParentRec(elem.parentElement, cssProp);
     };

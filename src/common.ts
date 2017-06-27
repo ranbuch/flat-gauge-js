@@ -110,7 +110,7 @@ export class Common {
     getComputedStyleByParentRec(elem: any, cssProp: string): string {
         if (!elem) return null;
         let css = getComputedStyle(elem) as any;
-        let val = css['cssProp'];
+        let val = css[cssProp];
         if (val) return val;
         return this.getComputedStyleByParentRec(elem.parentElement, cssProp);
     }
