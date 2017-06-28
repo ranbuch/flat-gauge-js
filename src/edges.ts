@@ -12,9 +12,28 @@ export class Edges {
     constructor(private options?: EdgesOptions) {
         this.common = new Common();
 
-        this.options = options;
+        let defaultOptions = this.getDefaultOptions();
 
+        this.options = this.common.extend(defaultOptions, options);
+        
         this.init();
+    }
+
+    getDefaultOptions(): EdgesOptions {
+        let colors = this.common.getDefaultColors();
+        let defRadius = 88, animationDuration = 500;
+        return {
+            color: colors.active,
+            minMaxVal: {
+                min: 30,
+                max: 70,
+                value: 55
+            },
+            radius: defRadius,
+            strokeWidth: 6,
+            animationDuration: animationDuration,
+            hollowEdges: SideState.None
+        } as EdgesOptions;
     }
 
     init() {

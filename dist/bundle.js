@@ -747,9 +747,27 @@ var Edges = function () {
     function Edges(options) {
         this.options = options;
         this.common = new common_1.Common();
-        this.options = options;
+        var defaultOptions = this.getDefaultOptions();
+        this.options = this.common.extend(defaultOptions, options);
         this.init();
     }
+    Edges.prototype.getDefaultOptions = function () {
+        var colors = this.common.getDefaultColors();
+        var defRadius = 88,
+            animationDuration = 500;
+        return {
+            color: colors.active,
+            minMaxVal: {
+                min: 30,
+                max: 70,
+                value: 55
+            },
+            radius: defRadius,
+            strokeWidth: 6,
+            animationDuration: animationDuration,
+            hollowEdges: interfaces_1.SideState.None
+        };
+    };
     Edges.prototype.init = function () {
         this.leftElement = this.common.jsonToHtml({
             type: 'span',
