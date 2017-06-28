@@ -765,7 +765,8 @@ var Edges = function () {
             radius: defRadius,
             strokeWidth: 6,
             animationDuration: animationDuration,
-            hollowEdges: interfaces_1.SideState.None
+            hollowEdges: interfaces_1.SideState.None,
+            backgroundColor: '#ffffff'
         };
     };
     Edges.prototype.init = function () {
@@ -796,8 +797,9 @@ var Edges = function () {
         var height = options.strokeWidth + Edges.AddToEdge + Edges.AddToEdgeHeight + 'px';
         var top = 'calc(50% - ' + (options.strokeWidth / 2 + Edges.AddToEdge / 2 + Edges.AddToEdgeHeight / 2) + 'px)';
         var leftStyle = 'calc(50% - ' + Edges.AddToEdge / 2 + 'px)';
-        var bgColor = this.common.getComputedStyleByParentRec(this.leftElement, 'backgroundColor');
-        if (!bgColor) bgColor = '#fff';
+        // let bgColor = this.common.getComputedStyleByParentRec(this.leftElement, 'backgroundColor');
+        // if (!bgColor)
+        var bgColor = this.options.backgroundColor;
         var left = this.leftElement;
         left.style.height = height;
         left.style.top = top;
