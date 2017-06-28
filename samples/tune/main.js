@@ -54,6 +54,8 @@ window.addEventListener('load', function () {
   var update = function () {
     let animationDuration = 1500;
     window.tune.update({
+      backgroundColor: '#ffffff',
+      hollowEdgesBgColor: '#ffffff',
       edges: true,
       hideBottom: true,
       animationDuration: animationDuration,

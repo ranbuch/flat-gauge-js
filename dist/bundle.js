@@ -1523,13 +1523,6 @@ var Tune = function () {
         }
     };
     Tune.prototype.init = function () {
-        // let h4 = {
-        //     type: 'h4',
-        //     attrs: {
-        //         'style': `position: absolute; z-index: 10; text-align: center; width: 100%; transition-property: color; margin: 0;bottom: 0;`
-        //     }
-        // } as JsonToHtmlElement;
-        // let h4Elem = this.common.jsonToHtml(h4) as any;
         var obj = {
             type: 'div',
             attrs: {
@@ -1538,7 +1531,6 @@ var Tune = function () {
         };
         var innerElem = this.common.jsonToHtml(obj);
         this.updateOptions(false);
-        // innerElem.appendChild(h4Elem);
         innerElem.appendChild(this.circle.getElement());
         innerElem.appendChild(this.needle.getElement());
         innerElem.appendChild(this.edges.getLeftElement());
@@ -1605,7 +1597,8 @@ var Tune = function () {
             hollowEdges: interfaces_1.SideState.None,
             // title: this.common.setInnerTextDefaults(),
             hideBottom: true,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            hollowEdgesBgColor: '#ffffff'
         };
     };
     Tune.prototype.setCircle = function () {
@@ -1631,6 +1624,7 @@ var Tune = function () {
         this.edgesOptions.strokeWidth = this.options.strokeWidth;
         this.edgesOptions.color = this.options.colors.active;
         this.edgesOptions.hollowEdges = this.options.hollowEdges;
+        this.edgesOptions.backgroundColor = this.options.hollowEdgesBgColor;
         if (this.edges) this.edges.update(this.edgesOptions);else this.edges = new edges_1.Edges(this.edgesOptions);
         var left = this.element.querySelector('[data-left-edge]');
         var right = this.element.querySelector('[data-right-edge]');

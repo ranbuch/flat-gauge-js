@@ -48,14 +48,6 @@ export class Tune {
     }
 
     init() {
-        // let h4 = {
-        //     type: 'h4',
-        //     attrs: {
-        //         'style': `position: absolute; z-index: 10; text-align: center; width: 100%; transition-property: color; margin: 0;bottom: 0;`
-        //     }
-        // } as JsonToHtmlElement;
-        // let h4Elem = this.common.jsonToHtml(h4) as any;
-
         let obj = {
             type: 'div',
             attrs: {
@@ -66,8 +58,6 @@ export class Tune {
         let innerElem = this.common.jsonToHtml(obj);
 
         this.updateOptions(false);
-
-        // innerElem.appendChild(h4Elem);
 
         innerElem.appendChild(this.circle.getElement());
         innerElem.appendChild(this.needle.getElement());
@@ -142,7 +132,8 @@ export class Tune {
             hollowEdges: SideState.None,
             // title: this.common.setInnerTextDefaults(),
             hideBottom: true,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            hollowEdgesBgColor: '#ffffff'
         } as TuneOptions;
     }
 
@@ -185,7 +176,7 @@ export class Tune {
         this.edgesOptions.strokeWidth = this.options.strokeWidth;
         this.edgesOptions.color = this.options.colors.active;
         this.edgesOptions.hollowEdges = this.options.hollowEdges;
-        
+        this.edgesOptions.backgroundColor = this.options.hollowEdgesBgColor;
         
         if (this.edges)
             this.edges.update(this.edgesOptions);
