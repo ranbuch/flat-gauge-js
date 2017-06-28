@@ -102,6 +102,7 @@ export enum SideState {
 
 export interface EdgesOptions {
     color: string;
+    backgroundColor?: string;
     minMaxVal: MinMaxVal;
     radius: number;
     strokeWidth: number;

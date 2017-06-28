@@ -32,7 +32,8 @@ export class Edges {
             radius: defRadius,
             strokeWidth: 6,
             animationDuration: animationDuration,
-            hollowEdges: SideState.None
+            hollowEdges: SideState.None,
+            backgroundColor: '#ffffff'
         } as EdgesOptions;
     }
 
@@ -72,9 +73,9 @@ export class Edges {
         let top = 'calc(50% - ' + ((options.strokeWidth / 2) + (Edges.AddToEdge / 2) + (Edges.AddToEdgeHeight / 2)) + 'px)';
         let leftStyle = 'calc(50% - ' + (Edges.AddToEdge / 2) + 'px)';
 
-        let bgColor = this.common.getComputedStyleByParentRec(this.leftElement, 'backgroundColor');
-        if (!bgColor)
-            bgColor = '#fff';
+        // let bgColor = this.common.getComputedStyleByParentRec(this.leftElement, 'backgroundColor');
+        // if (!bgColor)
+        let bgColor = this.options.backgroundColor;
 
         let left = this.leftElement;
         left.style.height = height;
