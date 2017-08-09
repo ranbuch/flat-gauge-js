@@ -114,6 +114,7 @@ export class Tune {
                 animationDuration: animationDuration,
                 degree: 50,
                 radius: defRadius,
+				radiusOffset: 0,
                 src: '',
                 dimensions: {
                     width: 25,

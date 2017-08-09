@@ -114,6 +114,7 @@ export interface EdgesOptions {
 export interface IconOptions {
     degree: number;
     radius: number;
+	radiusOffset?: number;
     animationDuration?: number;
     src: string;
     dimensions: {
