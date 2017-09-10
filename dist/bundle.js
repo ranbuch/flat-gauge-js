@@ -887,26 +887,17 @@ var Icon = function () {
         image.style.height = options.dimensions.height + 'px';
         if (typeof options.top === 'undefined') options.top = 0;
         if (typeof options.left === 'undefined') options.left = 0;
-        var subFromLeft = options.dimensions.width / 2 + options.left;
-        image.style.left = "calc(50% - " + subFromLeft + "px)";
-        var subFromTop = options.dimensions.height / 2 + options.top;
-        image.style.top = "calc(50% - " + subFromTop + "px)";
-        // image.style.transitionDuration = options.animationDuration + 'ms';
+        var deg = (options.degree - 50) * 3.6;
+        var scalar = options.radius + options.radiusOffset;
+        var xVector = Math.sin(deg * (Math.PI / 180)) * scalar;
+        var yVector = -Math.cos(deg * (Math.PI / 180)) * scalar;
+        image.style.left = options.dimensions.width / -2 + options.radius + xVector + 'px';
+        image.style.top = options.dimensions.height / -2 + options.radius + yVector + 'px';
         image.style.transitionDuration = '0ms';
         image.style.opacity = options.opacity;
         image.src = options.src;
         if (options.src) image.style.display = 'inline-block';else image.style.display = 'none';
-        // let scalarX = options.radius - (options.dimensions.width / 2), scalarY = options.radius - (options.dimensions.height / 2), xVector, yVector;
-        var scalarX = options.radius,
-            scalarY = options.radius - options.dimensions.height / 2,
-            xVector,
-            yVector;
-        var deg = (options.degree - 50) * 3.6;
-        xVector = Math.sin(deg * (Math.PI / 180)) * scalarX;
-        yVector = -Math.cos(deg * (Math.PI / 180)) * scalarY;
-        // console.log("sin: " + Math.sin(deg * (Math.PI / 180)) + ", xVector:" + xVector);
-        // console.log("cos: " + Math.cos(deg * (Math.PI / 180)) + ", yVector:" + yVector);
-        image.style.transform = "translate3d(" + xVector + "px, " + yVector + "px, 0) rotate(" + deg + "deg)";
+        image.style.transform = "rotate(" + deg + "deg)";
     };
     Icon.prototype.getElement = function () {
         return this.element;
@@ -1579,6 +1570,7 @@ var Tune = function () {
                 animationDuration: animationDuration,
                 degree: 50,
                 radius: defRadius,
+                radiusOffset: 0,
                 src: '',
                 dimensions: {
                     width: 25,

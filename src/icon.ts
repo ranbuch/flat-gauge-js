@@ -42,11 +42,16 @@ export class Icon {
             options.top = 0;
         if (typeof options.left === 'undefined')
             options.left = 0;
-        var subFromLeft = (options.dimensions.width / 2) + options.left;
-        image.style.left = `calc(50% - ${subFromLeft}px)`;
-        var subFromTop = (options.dimensions.height / 2) + options.top;
-        image.style.top = `calc(50% - ${subFromTop}px)`;
-        // image.style.transitionDuration = options.animationDuration + 'ms';
+      
+	    let deg = (options.degree - 50) * 3.6;
+	    let scalar = options.radius + options.radiusOffset;
+	
+        let xVector = Math.sin(deg * (Math.PI / 180)) * scalar;
+        let yVector = -Math.cos(deg * (Math.PI / 180)) * scalar;
+
+        image.style.left = ((options.dimensions.width / -2) + options.radius + xVector) + 'px';
+        image.style.top = ((options.dimensions.height / -2) + options.radius + yVector) + 'px';
+       
         image.style.transitionDuration = '0ms';
         image.style.opacity = options.opacity;
         image.src = options.src;
@@ -55,14 +60,7 @@ export class Icon {
         else
             image.style.display = 'none';
 
-        // let scalarX = options.radius - (options.dimensions.width / 2), scalarY = options.radius - (options.dimensions.height / 2), xVector, yVector;
-        let scalarX = options.radius, scalarY = options.radius - (options.dimensions.height / 2), xVector, yVector;
-        let deg = (options.degree - 50) * 3.6;
-        xVector = Math.sin(deg * (Math.PI / 180)) * scalarX;
-        yVector = -Math.cos(deg * (Math.PI / 180)) * scalarY;
-        // console.log("sin: " + Math.sin(deg * (Math.PI / 180)) + ", xVector:" + xVector);
-        // console.log("cos: " + Math.cos(deg * (Math.PI / 180)) + ", yVector:" + yVector);
-        image.style.transform = `translate3d(${xVector}px, ${yVector}px, 0) rotate(${deg}deg)`;
+        image.style.transform = `rotate(${deg}deg)`;
     }
 
     public getElement(): any {
