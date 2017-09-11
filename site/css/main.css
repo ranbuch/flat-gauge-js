@@ -15,7 +15,7 @@ code, code * {
     background-color: rgba(200,200,200,0.2);
 }
 
-#tuneCodeWrap {
+#tuneCodeWrap, #multituneCodeWrap {
     display: none;
 }
 
@@ -44,4 +44,11 @@ body .ui.grid>.row {
 
 .diameter {
     width: 176px;
+}
+
+input:disabled {
+    border: none;
+    background: transparent;
+    text-align: right;
+    width: 85px;
 }

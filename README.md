@@ -114,6 +114,61 @@ setTimeout(() => {
 
 ```
 
+## Multi-Tune Example
+```javascript
+var target = document.getElementById('target');
+
+var multiTune = new FlatGauge.MultiTune(target, {
+    rotationSpeed: 1000
+  });
+```
+### Options
+```javascript
+{
+    needleOptions: {
+        color: string;
+        minMaxVal: {
+            min: number;
+            max: number;
+            value: number;
+        };
+        radius: number;
+        scale: number;
+        animationDuration: number;
+    };
+    segments: [
+        min: number;
+        max: number;
+        value?: number;
+    ];
+    iconOptions?: {
+        degree: number;
+        radius: number;
+        animationDuration: number;
+        src: string;
+        dimensions: {
+            width: number;
+            height: number;
+        },
+        opacity: number;
+    };
+    colors?: {
+        default: string;
+        active: string;
+        inactive: string;
+    };
+    strokeWidth?: number;
+    animationDuration?: number;
+    radius: number;
+    showEdges: boolean;
+    showIcon: boolean;
+    hideBottom: boolean;
+    backgroundColor?: string;
+    hollowEdgesBgColor?: string;
+    hollowEdges?: number; // ENUM: None = 0,Left = 1,Right = 2,Both = 3;
+}
+```
+
 ## Timer Example
 ```javascript
 var target = document.getElementById('target');

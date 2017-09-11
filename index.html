@@ -204,6 +204,64 @@
             <div class="ui middle aligned stackable grid container">
                 <div class="row">
                     <div class="eight wide column text-center">
+                        <h3>Multi-Tune</h3>
+                        <code>
+                            var multitune = new FlatGauge.MultiTune(element, options);
+                        </code>
+                        <div>
+                            needle
+                            <input type="range" value="50" id="multituneRange" min="0" max="100">
+                            <br>
+                            <input type="number" disabled id="multituneRangeNumber">
+                        </div>
+                        <div>
+                            left
+                            <input type="range" value="30" id="multituneRangeLeft" min="0" max="100">
+                            <input type="checkbox" id="multituneHollowLeft">
+                            <br>
+                            <input type="number" disabled id="multituneRangeLeftNumber">
+                        </div>
+                        <div>
+                            rigth
+                            <input type="range" value="70" id="multituneRangeRight" min="0" max="100">
+                            <input type="checkbox" id="multituneHollowRight">
+                            <br>
+                            <input type="number" disabled id="multituneRangeRightNumber">
+                        </div>
+                        <div>
+                            icon
+                            <input type="range" value="70" id="multituneRangeIcon" min="0" max="100">
+                            <input type="checkbox" id="multituneRangeIconEnabled">
+                            <br>
+                            <input type="number" disabled id="multirangeIconNumber">
+                        </div>
+                    </div>
+                    <div class="eight wide right floated column">
+                        <div class="center-me" id="multituneTarget"></div>
+                    </div>
+                </div>
+                <div class="row" id="multituneCodeWrap">
+                    <div class="column">
+                        <h4 class="ui horizontal header divider">
+                            <a href="#">Options:</a>
+                        </h4>
+                        <code>
+                            var options = 
+                        </code>
+                        <code id="multituneCode"></code>
+                        <br>
+                        <code>
+                            multitune.update(options);
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column text-center">
                         <h3>Timer</h3>
                         <code>
                             var timer = new FlatGauge.Timer(element, options);
@@ -234,7 +292,7 @@
             </div>
         </div>
 
-        
+
 
 
 
@@ -338,14 +396,6 @@
     <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
     <script src="site/script/main.js"></script>
     <script src="dist/bundle.js"></script>
-
-
-
 </body>
-<!--<body>
-    <div class="wrapper center-me">
-    </div>
-    
-</body>-->
 
 </html>

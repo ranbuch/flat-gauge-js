@@ -53,7 +53,7 @@ export interface RGBA {
 export interface MinMaxVal {
     min: number;
     max: number;
-    value: number;
+    value?: number;
 }
 
 export interface NeedleOptions {
@@ -81,6 +81,29 @@ export interface TuneOptions {
     hollowEdgesBgColor?: string;
 }
 
+// export interface MinMaxEdge {
+//     minMaxVal: MinMaxVal;
+//     leftEdges?: SinngleSideState;
+//     rightEdges?: SinngleSideState;
+//     bgColor: string;
+// }
+
+export interface MultituneOptions {
+    needleOptions: NeedleOptions;
+    segments: Array<MinMaxVal>;
+    iconOptions?: IconOptions;
+    colors?: ColorPalette;
+    strokeWidth?: number;
+    animationDuration?: number;
+    radius: number;
+    showEdges: boolean;
+    showIcon: boolean;
+    hideBottom: boolean;
+    backgroundColor?: string;
+    hollowEdgesBgColor?: string;
+    hollowEdges?: SideState;
+}
+
 export interface RangeOptions {
     colors?: ColorPalette;
     minMaxVal: MinMaxVal;
@@ -100,6 +123,12 @@ export enum SideState {
     Right,
     Both,
 }
+
+// export enum SinngleSideState {
+//     None,
+//     Hollow,
+//     Full,
+// }
 
 export interface EdgesOptions {
     color: string;
