@@ -1,4 +1,4 @@
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
   var target = document.getElementById('target');
   window.spinner = new FlatGauge.Spinner(target, {
     rotationSpeed: 1000,
@@ -7,5 +7,4 @@ window.addEventListener('load', function() {
     },
     highlight: true
   });
-  
-})
+});
