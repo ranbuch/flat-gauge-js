@@ -1,4 +1,4 @@
-import { JsonToHtmlElement, RGBA, InnerText, ColorPalette, NeedleOptions, MinMaxVal, FromTo, Time, SideState } from './interfaces';
+import { JsonToHtmlElement, RGBA, InnerText, ColorPalette, MinMaxVal, FromTo, Time, SideState } from './interfaces';
 
 export class Common {
     static NameSpaceElements: Array<string> = ['svg', 'path', 'g'];
