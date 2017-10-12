@@ -18,24 +18,11 @@ gulp.task('copyHtml', function () {
 
 gulp.task('build', ['copyHtml'], function () {
     // build exports for ESNext modules
-    browserify({
-        basedir: '.',
-        debug: true,
-        entries: ['index.ts'],
-        cache: {},
-        packageCache: {}
-    })
-        .plugin(tsify)
-        .transform('babelify', {
-            presets: ['es2015'],
-            extensions: ['.ts']
-        })
-        .bundle()
-        .pipe(source('index.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(''));
+    var modulesToExport = ['ampm', 'interfaces', 'multitune', 'range', 'spinner', 'timer', 'tune'];
+    modulesToExport.forEach(
+        function (fileName) {
+            tsifyFile(fileName);
+        });
 
     // build dist directory content
     browserify({
@@ -74,7 +61,7 @@ gulp.task('build', ['copyHtml'], function () {
         .pipe(source('bundle.min.js'))
         .pipe(buffer())
         .pipe(gulpif('*.js', uglify()))
-        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(sourcemaps.init({ loadMaps: false }))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('dist'));
 });
@@ -91,3 +78,25 @@ gulp.task('webserver', function () {
 gulp.task('serve', ['build', 'webserver'], function () {
 
 });
+
+function tsifyFile(fileName) {
+    return browserify({
+        basedir: '.',
+        debug: true,
+        entries: ['src/' + fileName + '.ts'],
+        cache: {},
+        packageCache: {}
+    })
+        .plugin(tsify)
+        .transform('babelify', {
+            presets: ['es2015'],
+            extensions: ['.ts']
+        })
+        .bundle()
+        .pipe(source(fileName + '.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('src'));
+
+}
