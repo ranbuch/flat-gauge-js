@@ -52,3 +52,7 @@ input:disabled {
     text-align: right;
     width: 85px;
 }
+
+.theme-color {
+    color: rgb(76, 206, 173);
+}
