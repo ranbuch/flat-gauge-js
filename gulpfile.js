@@ -7,18 +7,34 @@ var buffer = require('vinyl-buffer');
 var webserver = require('gulp-webserver');
 var uglify = require('gulp-uglify');
 var gulpif = require('gulp-if');
+var ts = require('gulp-typescript');
+var merge = require('merge2');
 var paths = {
     pages: ['src/*.html']
 };
+
+var tsProject = ts.createProject({
+    declaration: true
+});
+
+gulp.task('build', ['scripts'], function() {
+    var tsResult = gulp.src('src/*.ts')
+        .pipe(tsProject());
+ 
+    return merge([ // Merge the two output streams, so this task is finished when the IO of both operations is done.
+        tsResult.dts.pipe(gulp.dest('')),
+        tsResult.js.pipe(gulp.dest(''))
+    ]);
+});
 
 gulp.task('copyHtml', function () {
     return gulp.src(paths.pages)
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['copyHtml'], function () {
+gulp.task('scripts', ['copyHtml'], function () {
     // build exports for ESNext modules
-    var modulesToExport = ['ampm', 'interfaces', 'multitune', 'range', 'spinner', 'timer', 'tune'];
+    var modulesToExport = ['ampm', 'interfaces', 'multitune', 'range', 'spinner', 'timer', 'tune', 'index'];
     modulesToExport.forEach(
         function (fileName) {
             tsifyFile(fileName);
@@ -87,7 +103,7 @@ function tsifyFile(fileName) {
         cache: {},
         packageCache: {}
     })
-        .plugin(tsify)
+        .plugin(tsify, {declaration: true})
         .transform('babelify', {
             presets: ['es2015'],
             extensions: ['.ts']

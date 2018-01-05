@@ -319,7 +319,7 @@ var AmPm = /** @class */function () {
 }();
 exports.AmPm = AmPm;
 
-},{"./circle":2,"./common":3,"./edges":4,"./needle":6}],2:[function(require,module,exports){
+},{"./circle":2,"./common":3,"./edges":4,"./needle":9}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -737,7 +737,7 @@ var Common = /** @class */function () {
 }();
 exports.Common = Common;
 
-},{"./interfaces":5}],4:[function(require,module,exports){
+},{"./interfaces":7}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -852,7 +852,80 @@ var Edges = /** @class */function () {
 }();
 exports.Edges = Edges;
 
-},{"./common":3,"./interfaces":5}],5:[function(require,module,exports){
+},{"./common":3,"./interfaces":7}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var common_1 = require("./common");
+var Icon = /** @class */function () {
+    function Icon(options) {
+        this.options = options;
+        this.common = new common_1.Common();
+        this.options = options;
+        this.init();
+    }
+    Icon.prototype.init = function () {
+        this.element = this.common.jsonToHtml({
+            type: 'img',
+            attrs: {
+                'style': 'position: absolute;z-index: 15;display: inline-block;',
+                'data-icon': ''
+            }
+        });
+        this.updateOptions();
+    };
+    Icon.prototype.update = function (options) {
+        this.options = this.common.extend(this.options, options);
+        this.updateOptions();
+    };
+    Icon.prototype.updateOptions = function () {
+        this.setImage(this.options);
+    };
+    Icon.prototype.setImage = function (options) {
+        var image = this.element;
+        image.style.width = options.dimensions.width + 'px';
+        image.style.height = options.dimensions.height + 'px';
+        if (typeof options.top === 'undefined') options.top = 0;
+        if (typeof options.left === 'undefined') options.left = 0;
+        var deg = (options.degree - 50) * 3.6;
+        var scalar = options.radius + options.radiusOffset;
+        var xVector = Math.sin(deg * (Math.PI / 180)) * scalar;
+        var yVector = -Math.cos(deg * (Math.PI / 180)) * scalar;
+        image.style.left = options.dimensions.width / -2 + options.radius + xVector + 'px';
+        image.style.top = options.dimensions.height / -2 + options.radius + yVector + 'px';
+        image.style.transitionDuration = '0ms';
+        image.style.opacity = options.opacity;
+        image.src = options.src;
+        if (options.src) image.style.display = 'inline-block';else image.style.display = 'none';
+        image.style.transform = "rotate(" + deg + "deg)";
+    };
+    Icon.prototype.getElement = function () {
+        return this.element;
+    };
+    return Icon;
+}();
+exports.Icon = Icon;
+
+},{"./common":3}],6:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var interfaces_1 = require("./interfaces");
+exports.SideState = interfaces_1.SideState;
+var ampm_1 = require("./ampm");
+exports.AmPm = ampm_1.AmPm;
+var multitune_1 = require("./multitune");
+exports.MultiTune = multitune_1.MultiTune;
+var range_1 = require("./range");
+exports.Range = range_1.Range;
+var spinner_1 = require("./spinner");
+exports.Spinner = spinner_1.Spinner;
+var timer_1 = require("./timer");
+exports.Timer = timer_1.Timer;
+var tune_1 = require("./tune");
+exports.Tune = tune_1.Tune;
+
+},{"./ampm":1,"./interfaces":7,"./multitune":8,"./range":10,"./spinner":11,"./timer":12,"./tune":13}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -864,7 +937,230 @@ var SideState;
     SideState[SideState["Both"] = 3] = "Both";
 })(SideState = exports.SideState || (exports.SideState = {}));
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var interfaces_1 = require("./interfaces");
+var common_1 = require("./common");
+var circle_1 = require("./circle");
+var needle_1 = require("./needle");
+var edges_1 = require("./edges");
+var icon_1 = require("./icon");
+var MultiTune = /** @class */function () {
+    function MultiTune(element, options) {
+        this.element = element;
+        this.common = new common_1.Common();
+        // set default options
+        var defaultOptions = this.getDefaultOptions();
+        // override defaults with user options
+        this.options = this.common.extend(defaultOptions, options);
+        this.fixOptions();
+        this.init();
+    }
+    MultiTune.prototype.fixOptions = function () {
+        this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
+        this.options.radius = this.common.fixRadius(this.options.radius);
+        // if we're hiding bottom we should take thoes values in to considuration
+        if (this.options.hideBottom) {
+            var portionToHide = 0.3334;
+            this.options.needleOptions.minMaxVal.max = this.common.normalizeByPercentage(this.options.needleOptions.minMaxVal.max, portionToHide);
+            this.options.needleOptions.minMaxVal.min = this.common.normalizeByPercentage(this.options.needleOptions.minMaxVal.min, portionToHide);
+            this.options.needleOptions.minMaxVal.value = this.common.normalizeByPercentage(this.options.needleOptions.minMaxVal.value, portionToHide);
+            if (this.options.iconOptions && typeof this.options.iconOptions.degree === 'number') this.options.iconOptions.degree = this.common.normalizeByPercentage(this.options.iconOptions.degree, portionToHide);
+        }
+    };
+    MultiTune.prototype.init = function () {
+        var obj = {
+            type: 'div',
+            attrs: {
+                'data-multi-tune': ''
+            }
+        };
+        var innerElem = this.common.jsonToHtml(obj);
+        this.updateOptions(false);
+        // this.extractEdgesFromCircles();
+        for (var i = 0; i < this.circles.length; i++) {
+            var c = this.circles[i].getElement();
+            innerElem.appendChild(c);
+            if (i == 1) {
+                c.style.position = 'absolute';
+                c.style.top = '0';
+            }
+            // innerElem.appendChild(this.edges[i].getLeftElement());
+            // innerElem.appendChild(this.edges[i].getRightElement());
+        }
+        innerElem.appendChild(this.edges.getLeftElement());
+        innerElem.appendChild(this.edges.getRightElement());
+        innerElem.appendChild(this.needle.getElement());
+        innerElem.appendChild(this.icon.getElement());
+        this.element.appendChild(innerElem);
+        this.updateOptions(true);
+    };
+    MultiTune.prototype.update = function (options) {
+        this.options = this.common.extend(this.options, options);
+        this.fixOptions();
+        this.updateOptions(true);
+    };
+    // extractEdgesFromCircles() {
+    // this.edges = [];
+    // this.edgesOptions = [];
+    // for (let i = 0; i < this.circles.length; i++) {
+    //     this.edgesOptions[i].hollowEdges = SideState.Both;
+    //     this.edgesOptions[i] = this.common.extend(this.options.needleOptions, this.edgesOptions);
+    //     this.edgesOptions = this.common.extend(this.options.needleOptions, this.edgesOptions);
+    //     this.edgesOptions.strokeWidth = this.options.strokeWidth;
+    //     this.edgesOptions.color = this.options.colors.active;
+    //     this.edgesOptions.hollowEdges = this.options.hollowEdges;
+    //     this.edgesOptions.backgroundColor = this.options.hollowEdgesBgColor;
+    // }
+    // this.circles.forEach((c) => {
+    //     this.edges = new Edges(this.edgesOptions);
+    //     this.edgesOptions.push({
+    //     });
+    //     innerElem.appendChild(c.getElement());
+    // });
+    // }
+    MultiTune.prototype.updateOptions = function (setWrap) {
+        if (setWrap) this.setWrap(this.options);
+        this.setCircles();
+        this.setNeedle();
+        this.setEdges();
+        this.setIcon();
+    };
+    MultiTune.prototype.setWrap = function (options) {
+        var wrap = this.element;
+        var dim = options.radius * 2 + 'px';
+        wrap.style.width = dim;
+        wrap.style.height = dim;
+        wrap.style.position = 'relative';
+    };
+    MultiTune.prototype.getDefaultOptions = function () {
+        var colors = this.common.getDefaultColors();
+        var defRadius = 88,
+            animationDuration = 500,
+            bgColor = '#ffffff';
+        return {
+            needleOptions: {
+                minMaxVal: {
+                    min: 30,
+                    max: 70,
+                    value: 55
+                },
+                color: colors.active,
+                scale: 1.125,
+                radius: defRadius,
+                animationDuration: animationDuration,
+                disabled: false
+            },
+            segments: [{
+                // minMaxVal: {
+                min: 0,
+                max: 37.5
+                // }
+                // ,
+                // leftEdges: SinngleSideState.None,
+                // rightEdges: SinngleSideState.Hollow,
+                // bgColor: bgColor
+            }, {
+                // minMaxVal: {
+                min: 62.5,
+                max: 100
+                // },
+                // leftEdges: SinngleSideState.Hollow,
+                // rightEdges: SinngleSideState.None,
+                // bgColor: bgColor
+            }],
+            iconOptions: {
+                animationDuration: animationDuration,
+                degree: 50,
+                radius: defRadius,
+                radiusOffset: 0,
+                src: '',
+                dimensions: {
+                    width: 25,
+                    height: 25
+                },
+                top: 0,
+                left: 0,
+                opacity: 1
+            },
+            colors: colors,
+            strokeWidth: 6,
+            animationDuration: animationDuration,
+            radius: defRadius,
+            showEdges: true,
+            showIcon: true,
+            hollowEdges: interfaces_1.SideState.None,
+            hideBottom: true,
+            backgroundColor: bgColor,
+            hollowEdgesBgColor: bgColor
+        };
+    };
+    MultiTune.prototype.setCircles = function () {
+        var exist = true;
+        if (!(this.circles instanceof Array)) {
+            exist = false;
+            this.circles = [];
+            this.circlesOptions = [];
+        }
+        for (var i = 0; i < this.options.segments.length; i++) {
+            if (exist) this.circlesOptions[i] = this.common.extend(this.options, this.circlesOptions[i]);else this.circlesOptions[i] = this.common.extend(this.options, {});
+            if (i == 0) {
+                this.circlesOptions[i].fromDegree = 0;
+                this.circlesOptions[i].toDegree = this.options.needleOptions.minMaxVal.min;
+            }
+            if (i == 1) {
+                this.circlesOptions[i].fromDegree = this.options.needleOptions.minMaxVal.max;
+                this.circlesOptions[i].toDegree = 100;
+            }
+            this.circlesOptions[i].backgroundColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+            if (!this.circlesOptions[i].backgroundColor) this.circlesOptions[i].backgroundColor = '#fff';
+            if (exist) this.circles[i].update(this.circlesOptions[i]);else this.circles[i] = new circle_1.Circle(this.circlesOptions[i]);
+        }
+    };
+    MultiTune.prototype.setNeedle = function () {
+        this.needleOptions = this.common.extend(this.options.needleOptions, this.needleOptions);
+        if (!this.options.needleOptions.color) this.needleOptions.color = this.common.isInRange(this.options.needleOptions.minMaxVal, this.options.hollowEdges) ? this.options.colors.active : this.options.colors.default;
+        if (this.options.needleOptions.minMaxVal.value > 100 || this.options.needleOptions.minMaxVal.value < 0) this.needleOptions.color = this.options.colors.inactive;else if (this.options.hideBottom) {
+            if (this.options.needleOptions.minMaxVal.value >= 83.34 || this.options.needleOptions.minMaxVal.value <= 16.67) this.needleOptions.color = this.options.colors.inactive;
+        }
+        if (this.needle) {
+            this.needle.update(this.needleOptions);
+        } else this.needle = new needle_1.Needle(this.needleOptions);
+    };
+    MultiTune.prototype.setEdges = function () {
+        this.edgesOptions = this.common.extend(this.options.needleOptions, this.edgesOptions);
+        this.edgesOptions.strokeWidth = this.options.strokeWidth;
+        this.edgesOptions.color = this.options.colors.active;
+        this.edgesOptions.hollowEdges = this.options.hollowEdges;
+        this.edgesOptions.backgroundColor = this.options.hollowEdgesBgColor;
+        if (this.edges) this.edges.update(this.edgesOptions);else this.edges = new edges_1.Edges(this.edgesOptions);
+        var left = this.element.querySelector('[data-left-edge]');
+        var right = this.element.querySelector('[data-right-edge]');
+        if (left && right) {
+            if (!this.options.showEdges) {
+                left.style.display = 'none';
+                right.style.display = 'none';
+            } else {
+                left.style.display = 'inline-block';
+                right.style.display = 'inline-block';
+            }
+        }
+    };
+    MultiTune.prototype.setIcon = function () {
+        this.iconOptions = this.common.extend(this.options.iconOptions, this.iconOptions);
+        if (this.icon) this.icon.update(this.iconOptions);else this.icon = new icon_1.Icon(this.iconOptions);
+        var image = this.element.querySelector('[data-icon]');
+        if (image) {
+            if (!this.options.showIcon || !this.iconOptions.src) image.style.display = 'none';else image.style.display = 'inline-block';
+        }
+    };
+    return MultiTune;
+}();
+exports.MultiTune = MultiTune;
+
+},{"./circle":2,"./common":3,"./edges":4,"./icon":5,"./interfaces":7,"./needle":9}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -947,6 +1243,628 @@ var Needle = /** @class */function () {
 }();
 exports.Needle = Needle;
 
-},{"./common":3}]},{},[1])
+},{"./common":3}],10:[function(require,module,exports){
+"use strict";
 
-//# sourceMappingURL=ampm.js.map
+Object.defineProperty(exports, "__esModule", { value: true });
+var interfaces_1 = require("./interfaces");
+var common_1 = require("./common");
+var circle_1 = require("./circle");
+var edges_1 = require("./edges");
+var Range = /** @class */function () {
+    function Range(element, options) {
+        this.element = element;
+        this.common = new common_1.Common();
+        // set default options
+        var defaultOptions = this.getDefaultOptions();
+        // override defaults with user options
+        this.options = this.common.extend(defaultOptions, options);
+        this.fixOptions();
+        this.init();
+    }
+    Range.prototype.fixOptions = function () {
+        this.options.title = this.common.setInnerTextDefaults(this.options.title);
+        this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
+        this.options.radius = this.common.fixRadius(this.options.radius);
+        if (this.options.hideBottom) {
+            var portionToHide = 0.3334;
+            this.options.minMaxVal.max = this.common.normalizeByPercentage(this.options.minMaxVal.max, portionToHide);
+            this.options.minMaxVal.min = this.common.normalizeByPercentage(this.options.minMaxVal.min, portionToHide);
+            this.options.minMaxVal.value = this.common.normalizeByPercentage(this.options.minMaxVal.value, portionToHide);
+        }
+    };
+    Range.prototype.init = function () {
+        var h4 = {
+            type: 'h4',
+            attrs: {
+                'style': "position: absolute; z-index: 10; text-align: center; width: 100%; transition-property: color; margin: 0;top: 50%;left: 0;transform: translateY(-50%);"
+            }
+        };
+        var h4Elem = this.common.jsonToHtml(h4);
+        var obj = {
+            type: 'div',
+            attrs: {
+                'data-range': ''
+            }
+        };
+        var innerElem = this.common.jsonToHtml(obj);
+        innerElem.appendChild(h4Elem);
+        this.updateOptions(false);
+        innerElem.appendChild(this.circle.getElement());
+        innerElem.appendChild(this.edges.getLeftElement());
+        innerElem.appendChild(this.edges.getRightElement());
+        this.element.appendChild(innerElem);
+        this.updateOptions(true);
+    };
+    Range.prototype.update = function (options) {
+        this.options = this.common.extend(this.options, options);
+        this.fixOptions();
+        this.updateOptions(true);
+    };
+    Range.prototype.updateOptions = function (setWrap) {
+        if (setWrap) this.setWrap(this.options);
+        this.setTitle(this.options);
+        this.setCircle();
+        this.setEdges();
+    };
+    Range.prototype.setTitle = function (options) {
+        var h4 = this.element.querySelector('h4');
+        if (!h4) return;
+        h4.style.color = options.highlight ? options.colors.active : options.colors.default;
+        h4.style.transitionDuration = options.animationDuration + 'ms';
+        h4.style.fontSize = options.title.fontSize + 'ms';
+        h4.style.fontFamily = options.title.fontFamily;
+        h4.style.fontWeight = options.title.fontWeight;
+        h4.style.letterSpacing = options.title.letterSpacing;
+        h4.style.lineHeight = options.title.lineHeight + 'px';
+        h4.textContent = options.title.text;
+        h4.style.top = 'calc(50% - ' + options.title.lineHeight / 2 + 'px)';
+    };
+    Range.prototype.setWrap = function (options) {
+        var wrap = this.element;
+        var dim = options.radius * 2 + 'px';
+        wrap.style.width = dim;
+        wrap.style.height = dim;
+        wrap.style.position = 'relative';
+    };
+    Range.prototype.getDefaultOptions = function () {
+        return {
+            minMaxVal: {
+                min: 30,
+                max: 70,
+                value: 55
+            },
+            title: {
+                text: '',
+                fontWeight: 'bold'
+            },
+            colors: this.common.getDefaultColors(),
+            strokeWidth: 6,
+            animationDuration: 500,
+            radius: 88,
+            showEdges: true,
+            showIcon: true,
+            hollowEdges: interfaces_1.SideState.None,
+            hideBottom: true,
+            highlight: false
+        };
+    };
+    Range.prototype.setCircle = function () {
+        this.circleOptions = this.common.extend(this.options, this.circleOptions);
+        this.circleOptions.fromDegree = this.options.minMaxVal.min;
+        this.circleOptions.toDegree = this.options.minMaxVal.max;
+        this.circleOptions.backgroundColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+        if (!this.circleOptions.backgroundColor) this.circleOptions.backgroundColor = '#fff';
+        if (this.circle) this.circle.update(this.circleOptions);else this.circle = new circle_1.Circle(this.circleOptions);
+    };
+    Range.prototype.setEdges = function () {
+        this.edgesOptions = this.common.extend(this.options, this.edgesOptions);
+        this.edgesOptions.strokeWidth = this.options.strokeWidth;
+        this.edgesOptions.color = this.options.colors.active;
+        this.edgesOptions.hollowEdges = this.options.hollowEdges;
+        if (this.edges) this.edges.update(this.edgesOptions);else this.edges = new edges_1.Edges(this.edgesOptions);
+        var left = this.element.querySelector('[data-left-edge]');
+        var right = this.element.querySelector('[data-right-edge]');
+        if (left && right) {
+            if (!this.options.showEdges) {
+                left.style.display = 'none';
+                right.style.display = 'none';
+            } else {
+                left.style.display = 'inline-block';
+                right.style.display = 'inline-block';
+            }
+        }
+    };
+    return Range;
+}();
+exports.Range = Range;
+
+},{"./circle":2,"./common":3,"./edges":4,"./interfaces":7}],11:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var common_1 = require("./common");
+var circle_1 = require("./circle");
+var Spinner = /** @class */function () {
+    function Spinner(element, options) {
+        this.element = element;
+        this.common = new common_1.Common();
+        // set default options
+        var defaultOptions = this.getDefaultOptions();
+        // override defaults with user options
+        this.options = this.common.extend(defaultOptions, options);
+        if (this.options.activeDegree == 100) this.options.activeDegree = 99.9999;
+        this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
+        this.options.radius = this.common.fixRadius(this.options.radius);
+        this.init();
+    }
+    Spinner.prototype.getDefaultOptions = function () {
+        return {
+            colors: this.common.getDefaultColors(),
+            activeDegree: 10,
+            radius: 88,
+            strokeWidth: 6,
+            rotationSpeed: 5000,
+            animationDuration: 500,
+            title: {
+                text: '',
+                fontWeight: 'bold'
+            },
+            highlight: false
+        };
+    };
+    Spinner.prototype.update = function (options) {
+        this.options = this.common.extend(this.options, options);
+        if (this.options.activeDegree == 100) this.options.activeDegree = 99.9999;
+        this.options.title = this.common.setInnerTextDefaults(this.options.title);
+        this.updateOptions();
+    };
+    Spinner.prototype.updateOptions = function () {
+        this.setTitle(this.options);
+        this.setDiv(this.options);
+        this.setCircle();
+    };
+    Spinner.prototype.setTitle = function (options) {
+        var h4 = this.element.querySelector('h4');
+        h4.style.color = options.highlight ? options.colors.active : options.colors.default;
+        // h4.style.top = ((options.radius) - (options.title.fontSize / 2)) + 'px';
+        h4.style.transitionDuration = options.animationDuration + 'ms';
+        h4.style.fontSize = options.title.fontSize + 'ms';
+        h4.style.fontFamily = options.title.fontFamily;
+        h4.style.fontWeight = options.title.fontWeight;
+        h4.style.letterSpacing = options.title.letterSpacing;
+        h4.style.lineHeight = options.title.lineHeight + 'px';
+        h4.textContent = options.title.text;
+        // setTimeout(() => {
+        //     let h = parseInt(getComputedStyle(h4).height.replace('px', ''));
+        //     if (!isNaN(h))
+        //         h4.style.top = ((options.radius) - (h / 2)) + 'px';
+        // }, 10);
+    };
+    Spinner.prototype.setDiv = function (options) {
+        var div = this.element.querySelector('div[data-spinner]');
+        var dim = options.radius * 2 + 'px';
+        div.style.width = dim;
+        div.style.height = dim;
+        div.style.transitionDuration = options.animationDuration;
+    };
+    Spinner.prototype.init = function () {
+        this.options.title = this.common.setInnerTextDefaults(this.options.title);
+        var h4 = {
+            type: 'h4',
+            attrs: {
+                'style': "position: absolute; z-index: 10; text-align: center; width: 100%; transition-property: color; margin: 0;top: 50%;left: 0;transform: translateY(-50%);"
+            }
+        };
+        var h4Elem = this.common.jsonToHtml(h4);
+        var obj = {
+            type: 'div',
+            attrs: {
+                'style': "position: relative;",
+                'data-spinner': ''
+            }
+        };
+        var innerElem = this.common.jsonToHtml(obj);
+        this.setCircle();
+        innerElem.appendChild(h4Elem);
+        innerElem.appendChild(this.circle.getElement());
+        this.element.appendChild(innerElem);
+        this.updateOptions();
+    };
+    Spinner.prototype.setCircle = function () {
+        this.circleOptions = this.common.extend(this.options, this.circleOptions);
+        this.circleOptions.fromDegree = -this.options.activeDegree / 2;
+        this.circleOptions.toDegree = this.options.activeDegree / 2;
+        this.circleOptions.backgroundColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+        if (!this.circleOptions.backgroundColor) this.circleOptions.backgroundColor = '#fff';
+        if (this.circle) {
+            this.circle.update(this.circleOptions);
+        } else this.circle = new circle_1.Circle(this.circleOptions);
+    };
+    return Spinner;
+}();
+exports.Spinner = Spinner;
+
+},{"./circle":2,"./common":3}],12:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var common_1 = require("./common");
+var circle_1 = require("./circle");
+var edges_1 = require("./edges");
+var Timer = /** @class */function () {
+    function Timer(element, options) {
+        this.element = element;
+        this.common = new common_1.Common();
+        // set default options
+        var defaultOptions = this.getDefaultOptions();
+        // override defaults with user options
+        this.options = this.common.extend(defaultOptions, options);
+        this.options.title = this.common.setInnerTextDefaults(this.options.title);
+        this.fixOptions();
+        this.init();
+    }
+    Timer.prototype.fixOptions = function () {
+        this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
+        this.options.radius = this.common.fixRadius(this.options.radius);
+        if (this.options.percentage >= 100) this.options.percentage = 99.999;
+    };
+    Timer.prototype.init = function () {
+        var _this = this;
+        var currentSeconds = this.common.getSecondsFromTime(this.options.time);
+        this.fullSeconds = currentSeconds * 100 / this.options.percentage;
+        var h4 = {
+            type: 'h4',
+            attrs: {
+                'style': 'position: absolute;z-index: 10;text-align: center;width: 100%;top: 50%;transform: translateY(-50%);transition-property: color;left: 0; margin: 0;'
+            },
+            children: [{
+                type: 'div',
+                attrs: {
+                    'data-clock': ''
+                },
+                children: [{
+                    type: 'span',
+                    attrs: {
+                        'data-number': ''
+                    }
+                }, {
+                    type: 'span',
+                    children: [{
+                        type: '#text',
+                        text: ':'
+                    }]
+                }, {
+                    type: 'span',
+                    attrs: {
+                        'data-number': ''
+                    }
+                }, {
+                    type: 'span',
+                    children: [{
+                        type: '#text',
+                        text: ':'
+                    }]
+                }, {
+                    type: 'span',
+                    attrs: {
+                        'data-number': ''
+                    }
+                }]
+            }, {
+                type: 'div',
+                attrs: {
+                    'data-text': ''
+                }
+            }]
+        };
+        var h4Elem = this.common.jsonToHtml(h4);
+        var obj = {
+            type: 'div',
+            attrs: {
+                'style': "position: relative;",
+                'data-spinner': ''
+            }
+        };
+        var innerElem = this.common.jsonToHtml(obj);
+        this.updateOptions(false);
+        innerElem.appendChild(h4Elem);
+        innerElem.appendChild(this.circle.getElement());
+        innerElem.appendChild(this.edges.getLeftElement());
+        innerElem.appendChild(this.edges.getRightElement());
+        this.element.appendChild(innerElem);
+        this.updateOptions(true);
+        setTimeout(function () {
+            _this.updateTimer();
+        }, 1000);
+    };
+    Timer.prototype.update = function (options) {
+        this.options = this.common.extend(this.options, options);
+        this.fixOptions();
+        // this.fixOptions();
+        this.updateOptions(true);
+    };
+    Timer.prototype.updatePercentage = function () {
+        this.options.percentage = this.common.getSecondsFromTime(this.options.time) / this.fullSeconds * 100;
+    };
+    Timer.prototype.updateTimer = function () {
+        var _this = this;
+        this.updatePercentage();
+        if (this.common.decreaseTime(this.options.time)) {
+            // TODO time is up!
+            // this.status = 'Time is up!';
+            // return this.mode = '';
+        } else {
+            setTimeout(function () {
+                _this.updateTimer();
+            }, 1000);
+        }
+        this.updateOptions(true);
+    };
+    Timer.prototype.updateOptions = function (setWrap) {
+        if (setWrap) {
+            this.setWrap(this.options);
+            this.setTitle(this.options);
+        }
+        this.setCircle();
+        this.setEdges();
+    };
+    Timer.prototype.setEdges = function () {
+        this.edgesOptions = this.common.extend(this.options, this.edgesOptions);
+        this.edgesOptions.minMaxVal = {
+            min: this.circleOptions.fromDegree,
+            max: this.circleOptions.toDegree,
+            value: this.options.percentage
+        };
+        this.edgesOptions.strokeWidth = this.options.strokeWidth;
+        this.edgesOptions.color = this.options.colors.active;
+        if (this.edges) this.edges.update(this.edgesOptions);else this.edges = new edges_1.Edges(this.edgesOptions);
+        var left = this.element.querySelector('[data-left-edge]');
+        var right = this.element.querySelector('[data-right-edge]');
+        if (left && right) {
+            if (!this.options.showEdges) {
+                left.style.display = 'none';
+                right.style.display = 'none';
+            } else {
+                left.style.display = 'inline-block';
+                right.style.display = 'inline-block';
+            }
+        }
+    };
+    Timer.prototype.setWrap = function (options) {
+        var wrap = this.element;
+        var dim = options.radius * 2 + 'px';
+        wrap.style.width = dim;
+        wrap.style.height = dim;
+        wrap.style.position = 'relative';
+    };
+    Timer.prototype.setTitle = function (options) {
+        var h4 = this.element.querySelector('h4');
+        h4.style.color = options.percentage == 0 ? options.colors.active : options.colors.default;
+        // h4.style.top = ((options.radius) - (options.title.fontSize / 2)) + 'px';
+        h4.style.top = '50%';
+        h4.style.transitionDuration = options.animationDuration + 'ms';
+        h4.style.fontSize = options.title.fontSize + 'ms';
+        h4.style.fontFamily = options.title.fontFamily;
+        h4.style.fontWeight = options.title.fontWeight;
+        h4.style.letterSpacing = options.title.letterSpacing;
+        h4.style.lineHeight = options.title.lineHeight + 'px';
+        var spans = h4.querySelectorAll('[data-clock] span[data-number]');
+        spans.forEach(function (element) {
+            element.style.color = options.colors.default;
+        });
+        if (options.percentage > 0) {
+            h4.querySelector('[data-clock]').style.display = 'block';
+            spans[0].textContent = this.common.padWithZiro(options.time.hours.toString());
+            spans[1].textContent = this.common.padWithZiro(options.time.minutes.toString());
+            spans[2].textContent = this.common.padWithZiro(options.time.seconds.toString());
+            h4.querySelector('[data-text]').textContent = '';
+        } else {
+            h4.querySelector('[data-clock]').style.display = 'none';
+            h4.querySelector('[data-text]').textContent = options.title.text;
+        }
+        // setTimeout(() => {
+        //     let h = parseInt(getComputedStyle(h4).height.replace('px', ''));
+        //     if (!isNaN(h))
+        //         h4.style.top = ((options.radius) - (h / 2)) + 'px';
+        // }, 10);
+    };
+    Timer.prototype.getDefaultOptions = function () {
+        return {
+            colors: this.common.getDefaultColors(),
+            radius: 88,
+            strokeWidth: 6,
+            animationDuration: 500,
+            title: {
+                text: 'time is up!',
+                fontSize: 18,
+                fontWeight: 'bold',
+                letterSpacing: '1px'
+            },
+            time: {
+                hours: 3,
+                minutes: 24,
+                seconds: 42
+            },
+            percentage: 99.999,
+            showEdges: true
+        };
+    };
+    Timer.prototype.setCircle = function () {
+        this.circleOptions = this.common.extend(this.options, this.circleOptions);
+        this.circleOptions.fromDegree = 50;
+        this.circleOptions.toDegree = this.options.percentage + 50;
+        this.circleOptions.backgroundColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+        if (!this.circleOptions.backgroundColor) this.circleOptions.backgroundColor = '#fff';
+        if (this.circle) this.circle.update(this.circleOptions);else this.circle = new circle_1.Circle(this.circleOptions);
+    };
+    return Timer;
+}();
+exports.Timer = Timer;
+
+},{"./circle":2,"./common":3,"./edges":4}],13:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var interfaces_1 = require("./interfaces");
+var common_1 = require("./common");
+var circle_1 = require("./circle");
+var needle_1 = require("./needle");
+var edges_1 = require("./edges");
+var icon_1 = require("./icon");
+var Tune = /** @class */function () {
+    function Tune(element, options) {
+        this.element = element;
+        this.common = new common_1.Common();
+        // set default options
+        var defaultOptions = this.getDefaultOptions();
+        // override defaults with user options
+        this.options = this.common.extend(defaultOptions, options);
+        this.fixOptions();
+        this.init();
+    }
+    Tune.prototype.fixOptions = function () {
+        // this.options.title = this.common.setInnerTextDefaults(this.options.title);
+        this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
+        this.options.radius = this.common.fixRadius(this.options.radius);
+        // if we're hiding bottom we should take thoes values in to considuration
+        if (this.options.hideBottom) {
+            var portionToHide = 0.3334;
+            this.options.needleOptions.minMaxVal.max = this.common.normalizeByPercentage(this.options.needleOptions.minMaxVal.max, portionToHide);
+            this.options.needleOptions.minMaxVal.min = this.common.normalizeByPercentage(this.options.needleOptions.minMaxVal.min, portionToHide);
+            this.options.needleOptions.minMaxVal.value = this.common.normalizeByPercentage(this.options.needleOptions.minMaxVal.value, portionToHide);
+            if (this.options.iconOptions && typeof this.options.iconOptions.degree === 'number') this.options.iconOptions.degree = this.common.normalizeByPercentage(this.options.iconOptions.degree, portionToHide);
+        }
+    };
+    Tune.prototype.init = function () {
+        var obj = {
+            type: 'div',
+            attrs: {
+                'data-tune': ''
+            }
+        };
+        var innerElem = this.common.jsonToHtml(obj);
+        this.updateOptions(false);
+        innerElem.appendChild(this.circle.getElement());
+        innerElem.appendChild(this.needle.getElement());
+        innerElem.appendChild(this.edges.getLeftElement());
+        innerElem.appendChild(this.edges.getRightElement());
+        innerElem.appendChild(this.icon.getElement());
+        this.element.appendChild(innerElem);
+        this.updateOptions(true);
+    };
+    Tune.prototype.update = function (options) {
+        this.options = this.common.extend(this.options, options);
+        this.fixOptions();
+        this.updateOptions(true);
+    };
+    Tune.prototype.updateOptions = function (setWrap) {
+        if (setWrap) this.setWrap(this.options);
+        this.setCircle();
+        this.setNeedle();
+        this.setEdges();
+        this.setIcon();
+    };
+    Tune.prototype.setWrap = function (options) {
+        var wrap = this.element;
+        var dim = options.radius * 2 + 'px';
+        wrap.style.width = dim;
+        wrap.style.height = dim;
+        wrap.style.position = 'relative';
+    };
+    Tune.prototype.getDefaultOptions = function () {
+        var colors = this.common.getDefaultColors();
+        var defRadius = 88,
+            animationDuration = 500;
+        return {
+            needleOptions: {
+                minMaxVal: {
+                    min: 30,
+                    max: 70,
+                    value: 55
+                },
+                color: colors.active,
+                scale: 1.125,
+                radius: defRadius,
+                animationDuration: animationDuration,
+                disabled: false
+            },
+            iconOptions: {
+                animationDuration: animationDuration,
+                degree: 50,
+                radius: defRadius,
+                radiusOffset: 0,
+                src: '',
+                dimensions: {
+                    width: 25,
+                    height: 25
+                },
+                top: 0,
+                left: 0,
+                opacity: 1
+            },
+            colors: colors,
+            strokeWidth: 6,
+            animationDuration: animationDuration,
+            radius: defRadius,
+            showEdges: true,
+            showIcon: true,
+            hollowEdges: interfaces_1.SideState.None,
+            // title: this.common.setInnerTextDefaults(),
+            hideBottom: true,
+            backgroundColor: '#ffffff',
+            hollowEdgesBgColor: '#ffffff'
+        };
+    };
+    Tune.prototype.setCircle = function () {
+        this.circleOptions = this.common.extend(this.options, this.circleOptions);
+        this.circleOptions.fromDegree = this.options.needleOptions.minMaxVal.min;
+        this.circleOptions.toDegree = this.options.needleOptions.minMaxVal.max;
+        this.circleOptions.backgroundColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
+        if (!this.circleOptions.backgroundColor) this.circleOptions.backgroundColor = '#fff';
+        if (this.circle) this.circle.update(this.circleOptions);else this.circle = new circle_1.Circle(this.circleOptions);
+    };
+    Tune.prototype.setNeedle = function () {
+        this.needleOptions = this.common.extend(this.options.needleOptions, this.needleOptions);
+        if (!this.options.needleOptions.color) this.needleOptions.color = this.common.isInRange(this.options.needleOptions.minMaxVal, this.options.hollowEdges) ? this.options.colors.active : this.options.colors.default;
+        if (this.options.needleOptions.minMaxVal.value > 100 || this.options.needleOptions.minMaxVal.value < 0) this.needleOptions.color = this.options.colors.inactive;else if (this.options.hideBottom) {
+            if (this.options.needleOptions.minMaxVal.value >= 83.34 || this.options.needleOptions.minMaxVal.value <= 16.67) this.needleOptions.color = this.options.colors.inactive;
+        }
+        if (this.needle) {
+            this.needle.update(this.needleOptions);
+        } else this.needle = new needle_1.Needle(this.needleOptions);
+    };
+    Tune.prototype.setEdges = function () {
+        this.edgesOptions = this.common.extend(this.options.needleOptions, this.edgesOptions);
+        this.edgesOptions.strokeWidth = this.options.strokeWidth;
+        this.edgesOptions.color = this.options.colors.active;
+        this.edgesOptions.hollowEdges = this.options.hollowEdges;
+        this.edgesOptions.backgroundColor = this.options.hollowEdgesBgColor;
+        if (this.edges) this.edges.update(this.edgesOptions);else this.edges = new edges_1.Edges(this.edgesOptions);
+        var left = this.element.querySelector('[data-left-edge]');
+        var right = this.element.querySelector('[data-right-edge]');
+        if (left && right) {
+            if (!this.options.showEdges) {
+                left.style.display = 'none';
+                right.style.display = 'none';
+            } else {
+                left.style.display = 'inline-block';
+                right.style.display = 'inline-block';
+            }
+        }
+    };
+    Tune.prototype.setIcon = function () {
+        this.iconOptions = this.common.extend(this.options.iconOptions, this.iconOptions);
+        if (this.icon) this.icon.update(this.iconOptions);else this.icon = new icon_1.Icon(this.iconOptions);
+        var image = this.element.querySelector('[data-icon]');
+        if (image) {
+            if (!this.options.showIcon || !this.iconOptions.src) image.style.display = 'none';else image.style.display = 'inline-block';
+        }
+    };
+    return Tune;
+}();
+exports.Tune = Tune;
+
+},{"./circle":2,"./common":3,"./edges":4,"./icon":5,"./interfaces":7,"./needle":9}]},{},[6])
+
+//# sourceMappingURL=index.js.map

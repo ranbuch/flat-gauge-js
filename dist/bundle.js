@@ -6,7 +6,7 @@ var common_1 = require("./common");
 var circle_1 = require("./circle");
 var needle_1 = require("./needle");
 var edges_1 = require("./edges");
-var AmPm = function () {
+var AmPm = /** @class */function () {
     function AmPm(element, options) {
         this.element = element;
         this.common = new common_1.Common();
@@ -324,7 +324,7 @@ exports.AmPm = AmPm;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = require("./common");
-var Circle = function () {
+var Circle = /** @class */function () {
     function Circle(options) {
         this.options = options;
         this.common = new common_1.Common();
@@ -473,7 +473,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var interfaces_1 = require("./interfaces");
-var Common = function () {
+var Common = /** @class */function () {
     function Common() {}
     Common.prototype.extend = function (src, dest, copy) {
         for (var i in src) {
@@ -729,12 +729,12 @@ var Common = function () {
                 return interfaces_1.SideState.None;
         }
     };
+    Common.NameSpaceElements = ['svg', 'path', 'g'];
+    Common.xmlns = "http://www.w3.org/2000/svg";
+    // static needleWidthHeightRatio: number = 9.107127839547825;
+    Common.needleWidthHeightRatio = 8.69322239126;
     return Common;
 }();
-Common.NameSpaceElements = ['svg', 'path', 'g'];
-Common.xmlns = "http://www.w3.org/2000/svg";
-// static needleWidthHeightRatio: number = 9.107127839547825;
-Common.needleWidthHeightRatio = 8.69322239126;
 exports.Common = Common;
 
 },{"./interfaces":6}],4:[function(require,module,exports){
@@ -743,7 +743,7 @@ exports.Common = Common;
 Object.defineProperty(exports, "__esModule", { value: true });
 var interfaces_1 = require("./interfaces");
 var common_1 = require("./common");
-var Edges = function () {
+var Edges = /** @class */function () {
     function Edges(options) {
         this.options = options;
         this.common = new common_1.Common();
@@ -846,10 +846,10 @@ var Edges = function () {
     Edges.prototype.getRightElement = function () {
         return this.rightElement;
     };
+    Edges.AddToEdge = 4;
+    Edges.AddToEdgeHeight = 4;
     return Edges;
 }();
-Edges.AddToEdge = 4;
-Edges.AddToEdgeHeight = 4;
 exports.Edges = Edges;
 
 },{"./common":3,"./interfaces":6}],5:[function(require,module,exports){
@@ -857,7 +857,7 @@ exports.Edges = Edges;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = require("./common");
-var Icon = function () {
+var Icon = /** @class */function () {
     function Icon(options) {
         this.options = options;
         this.common = new common_1.Common();
@@ -949,7 +949,7 @@ var circle_1 = require("./circle");
 var needle_1 = require("./needle");
 var edges_1 = require("./edges");
 var icon_1 = require("./icon");
-var MultiTune = function () {
+var MultiTune = /** @class */function () {
     function MultiTune(element, options) {
         this.element = element;
         this.common = new common_1.Common();
@@ -1167,7 +1167,7 @@ exports.MultiTune = MultiTune;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = require("./common");
-var Needle = function () {
+var Needle = /** @class */function () {
     function Needle(options) {
         this.options = options;
         this.common = new common_1.Common();
@@ -1253,7 +1253,7 @@ var interfaces_1 = require("./interfaces");
 var common_1 = require("./common");
 var circle_1 = require("./circle");
 var edges_1 = require("./edges");
-var Range = function () {
+var Range = /** @class */function () {
     function Range(element, options) {
         this.element = element;
         this.common = new common_1.Common();
@@ -1387,7 +1387,7 @@ exports.Range = Range;
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = require("./common");
 var circle_1 = require("./circle");
-var Spinner = function () {
+var Spinner = /** @class */function () {
     function Spinner(element, options) {
         this.element = element;
         this.common = new common_1.Common();
@@ -1494,7 +1494,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = require("./common");
 var circle_1 = require("./circle");
 var edges_1 = require("./edges");
-var Timer = function () {
+var Timer = /** @class */function () {
     function Timer(element, options) {
         this.element = element;
         this.common = new common_1.Common();
@@ -1714,7 +1714,7 @@ var circle_1 = require("./circle");
 var needle_1 = require("./needle");
 var edges_1 = require("./edges");
 var icon_1 = require("./icon");
-var Tune = function () {
+var Tune = /** @class */function () {
     function Tune(element, options) {
         this.element = element;
         this.common = new common_1.Common();

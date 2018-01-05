@@ -276,3 +276,24 @@ var range = new FlatGauge.Range(target);
     highlight?: boolean;
 }
 ```
+
+## Typescript and ES6 Support
+```javascript
+import { Timer } from 'flat-gauge-js';
+export class FlatGaugeTimerComponent {
+  timer: Timer;
+  constructor() { 
+    var target = document.getElementById('target');
+    this.timer = new Timer(target, {
+        animationDuration: 500,
+        time: {
+          hours: 2,
+          minutes: 45,
+          seconds: 3
+        },
+        percentage: 33
+      });
+    }
+  }
+}
+```
