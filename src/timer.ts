@@ -31,8 +31,6 @@ export class Timer {
     fixOptions() {
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
-        if (this.options.percentage >= 100)
-            this.options.percentage = 99.999;
     }
 
     init() {
@@ -246,7 +244,7 @@ export class Timer {
                 minutes: 24,
                 seconds: 42
             },
-            percentage: 99.999,
+            percentage: 100,
             showEdges: true
         } as TimerOptions;
     }

@@ -21,6 +21,7 @@ var Circle = /** @class */function () {
     };
     Circle.prototype.update = function (options) {
         this.options = this.common.extend(this.options, options);
+        if (typeof this.options.indent === 'undefined') this.options.indent = 50;
         this.updateOptions();
     };
     Circle.prototype.updateOptions = function () {
@@ -28,8 +29,9 @@ var Circle = /** @class */function () {
         this.setElements(this.options);
     };
     Circle.prototype.setSvg = function (options) {
-        var startAngle = (options.fromDegree - 50) * 3.6,
-            endAngle = (options.toDegree - 50) * 3.6;
+        if (options.toDegree - options.fromDegree == 100) options.toDegree -= 0.0001;
+        var startAngle = (options.fromDegree - this.options.indent) * 3.6,
+            endAngle = (options.toDegree - this.options.indent) * 3.6;
         var d = this.describeArc(options.radius, options.radius, options.radius - options.strokeWidth / 2, startAngle, endAngle);
         var svg = this.element.querySelector('svg');
         var dim = options.radius * 2;
@@ -42,7 +44,7 @@ var Circle = /** @class */function () {
         var path = svg.querySelector('[data-arc]');
         path.setAttributeNS(null, 'stroke', options.colors.active);
         path.setAttributeNS(null, 'stroke-width', options.strokeWidth);
-        path.setAttributeNS(null, 'd', d);
+        if (d.indexOf('NaN') == -1) path.setAttributeNS(null, 'd', d);
         path.style.strokeWidth = options.strokeWidth + 'px';
         path.style.transitionDuration = options.animationDuration;
         var concealer = svg.querySelector('[data-concealer]');
@@ -445,7 +447,8 @@ var Edges = /** @class */function () {
             strokeWidth: 6,
             animationDuration: animationDuration,
             hollowEdges: interfaces_1.SideState.None,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            indent: 50
         };
     };
     Edges.prototype.init = function () {
@@ -510,8 +513,8 @@ var Edges = /** @class */function () {
             yVectorLeft,
             xVectorRight,
             yVectorRight;
-        var degLeft = (options.minMaxVal.min - 50) * 3.6;
-        var degRight = (options.minMaxVal.max - 50) * 3.6;
+        var degLeft = (options.minMaxVal.min - this.options.indent) * 3.6;
+        var degRight = (options.minMaxVal.max - this.options.indent) * 3.6;
         xVectorLeft = Math.sin(degLeft * (Math.PI / 180)) * scalar;
         yVectorLeft = -Math.cos(degLeft * (Math.PI / 180)) * scalar;
         left.style.transform = "translate3d(" + xVectorLeft + "px, " + yVectorLeft + "px, 0) rotate(" + degLeft + "deg)";
@@ -565,7 +568,6 @@ var Timer = /** @class */function () {
     Timer.prototype.fixOptions = function () {
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
-        if (this.options.percentage >= 100) this.options.percentage = 99.999;
     };
     Timer.prototype.init = function () {
         var _this = this;
@@ -744,7 +746,7 @@ var Timer = /** @class */function () {
                 minutes: 24,
                 seconds: 42
             },
-            percentage: 99.999,
+            percentage: 100,
             showEdges: true
         };
     };

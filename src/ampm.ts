@@ -51,28 +51,26 @@ export class AmPm {
         if (parseInt(arrFrom[0]) >= 12 || parseInt(arrTo[0]) >= 12) {
             toMinutes = this.common.getMinutesFromHour(this.options.fromTo.to);
         }
-        
+        console.log('fromMinutes: ' + fromMinutes);
+        console.log('toMinutes: ' + toMinutes);
         let max = 60 * 12;
-        if (fromMinutes > 0) {
-            from = this.common.getMinutesFromStart(this.options.fromTo.from, 0);
-            to = this.common.getMinutesFromStart(this.options.fromTo.to, 0);
-                
-            this.minMaxValAm = {
-                from: from / max * 100,
-                to: Math.min(to / max * 100, 100)
-            } as FromTo;
-        }
 
-        if (toMinutes > 0) {
-            from = this.common.getMinutesFromStart(this.options.fromTo.from, 60 * 12);
-            to = this.common.getMinutesFromStart(this.options.fromTo.to, 60 * 12);
-            
-            this.minMaxValPm = {
-                from: from / max * 100,
-                to: Math.min(to / max * 100, 100)
-            } as FromTo;
-        }
+        from = this.common.getMinutesFromStart(this.options.fromTo.from, 0);
+        to = this.common.getMinutesFromStart(this.options.fromTo.to, 0);
+
+        this.minMaxValAm = {
+            from: from / max * 100,
+            to: Math.min(to / max * 100, 100)
+        } as FromTo;
         
+        from = this.common.getMinutesFromStart(this.options.fromTo.from, 60 * 12);
+        to = this.common.getMinutesFromStart(this.options.fromTo.to, 60 * 12);
+
+        this.minMaxValPm = {
+            from: from / max * 100,
+            to: Math.min(to / max * 100, 100)
+        } as FromTo;
+
         this.lower = [];
         this.higher = [];
 
@@ -105,7 +103,7 @@ export class AmPm {
     }
 
     setNeedle() {
-        
+
         let now = this.common.getHoursAndMinutesLT(new Date());
 
         let isAm = now.indexOf('AM') > -1;
@@ -133,17 +131,17 @@ export class AmPm {
             this.needle.update(this.needleOptions);
         else
             this.needle = new Needle(this.needleOptions);
-            
-            // this.needle = {
-            //     minMaxVal: {
-            //         min: null,
-            //         max: null,
-            //         value: this.piService.getCurrentTimePercentage()
-            //     },
-            //     color: null
-            // };
-        
-        
+
+        // this.needle = {
+        //     minMaxVal: {
+        //         min: null,
+        //         max: null,
+        //         value: this.piService.getCurrentTimePercentage()
+        //     },
+        //     color: null
+        // };
+
+
 
         // this.needleStyleInner = this.common.getNeedleInnerStyle(this.diameter);
         // this.needleStyle = this.piService.getStyleByPercentage(this.diameter, this.niddle.minMaxVal.value, isAm);
@@ -273,9 +271,9 @@ export class AmPm {
         innerElem.querySelector('[data-pm-wrap]').appendChild(this.edgesPm.getLeftElement());
         innerElem.querySelector('[data-pm-wrap]').appendChild(this.edgesPm.getRightElement());
 
-        
+
         innerElem.querySelector('[data-needle-wrap]').appendChild(this.needle.getElement());
-        
+
 
         this.element.appendChild(innerElem);
 
@@ -292,10 +290,14 @@ export class AmPm {
     setCircles() {
         let setCircle = (prefix: string) => {
             this['circleOptions' + prefix] = this.common.extend(this.options, this['circleOptions' + prefix], true);
-        
-            this['circleOptions' + prefix].fromDegree = this.options.needleOptions.minMaxVal.min;
-            this['circleOptions' + prefix].toDegree = this.options.needleOptions.minMaxVal.max;
-            
+            this['circleOptions' + prefix].indent = 0;
+
+            this['circleOptions' + prefix].fromDegree = this['minMaxVal' + prefix].from;
+            this['circleOptions' + prefix].toDegree = this['minMaxVal' + prefix].to;
+
+            // this['circleOptions' + prefix].fromDegree = this.options.needleOptions.minMaxVal.min;
+            // this['circleOptions' + prefix].toDegree = this.options.needleOptions.minMaxVal.max;
+
             this['circleOptions' + prefix].backgroundColor = this.common.getComputedStyleByParentRec(this.element, 'backgroundColor');
             if (!this['circleOptions' + prefix].backgroundColor)
                 this['circleOptions' + prefix].backgroundColor = '#fff';
@@ -319,22 +321,24 @@ export class AmPm {
             this['edgesOptions' + prefix] = this.common.extend(this.options.needleOptions, this['edgesOptions' + prefix], true);
             this['edgesOptions' + prefix].strokeWidth = this.options.strokeWidth;
             this['edgesOptions' + prefix].color = this.options.colors.active;
-            this['edgesOptions' + prefix].hollowEdges = this.options['hollowEdges' +  + prefix];
-            
+            this['edgesOptions' + prefix].hollowEdges = this.options['hollowEdges' + + prefix];
+            this['edgesOptions' + prefix].minMaxVal = {
+                min: this['minMaxVal' + prefix].from,
+                max: this['minMaxVal' + prefix].to
+            }
+            this['edgesOptions' + prefix].indent = 0;
+
             if (this['edges' + prefix])
                 this['edges' + prefix].update(this['edgesOptions' + prefix]);
             else
                 this['edges' + prefix] = new Edges(this['edgesOptions' + prefix]);
-            let left = this.element.querySelector('[data-left-edge]');
-            let right = this.element.querySelector('[data-right-edge]');
-            if (left && right) {
-                if (!this.options['showEdges' + prefix]) {
-                    left.style.display = 'none';
-                    right.style.display = 'none';
-                }
-                else {
-                    left.style.display = 'inline-block';
-                    right.style.display = 'inline-block';
+            let allEdges = this.element.querySelectorAll('[data-' + prefix + '-wrap] [data-left-edge],[data-' + prefix + '-wrap] [data-right-edge]');
+            if (allEdges.length) {
+                let disp = 'inline-block';
+                if (!this.options['showEdges' + prefix])
+                    disp = 'none';
+                for (let i = 0; i < allEdges.length; i++) {
+                    allEdges[i].style.display = disp;
                 }
             }
         }
@@ -374,20 +378,20 @@ export class AmPm {
         let amNumbers = amWrap.querySelector('[data-am-numbers');
         amNumbers.style.top = (options.strokeWidth * 3) + 'px';
         amNumbers.style.left = (options.radius - options.strokeWidth * 3) + 'px';
-        
+
         let pmWrap = wrap.querySelector('[data-pm-wrap]');
         // let pmCircle = pmWrap.querySelector('[data-circle]')
         pmWrap.style.top = topLeftDim;
         pmWrap.style.left = topLeftDim;
-        
 
-        
+
+
         let nWrap = wrap.querySelector('[data-needle-wrap]');
         nWrap.style.top = topLeftDim;
         nWrap.style.left = ((options.radius / 3.5) + options.radius) + 'px';
-        
-        
-        
+
+
+
     }
 
     getDefaultOptions(): AmPmOptions {
@@ -395,8 +399,8 @@ export class AmPm {
         let colors = this.common.getDefaultColors();
         return {
             fromTo: {
-                from: '3:52',
-                to: '14:20'
+                from: '0:0',
+                to: '23:60'
             },
             radius: radius,
             colors: colors,

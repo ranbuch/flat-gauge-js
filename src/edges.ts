@@ -33,7 +33,8 @@ export class Edges {
             strokeWidth: 6,
             animationDuration: animationDuration,
             hollowEdges: SideState.None,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            indent: 50
         } as EdgesOptions;
     }
 
@@ -106,8 +107,8 @@ export class Edges {
         }
 
         let scalar = options.radius - (options.strokeWidth / 2), xVectorLeft, yVectorLeft, xVectorRight, yVectorRight;
-        let degLeft = (options.minMaxVal.min - 50) * 3.6;
-        let degRight = (options.minMaxVal.max - 50) * 3.6;
+        let degLeft = (options.minMaxVal.min - this.options.indent) * 3.6;
+        let degRight = (options.minMaxVal.max - this.options.indent) * 3.6;
         xVectorLeft = Math.sin(degLeft * (Math.PI / 180)) * scalar;
         yVectorLeft = -Math.cos(degLeft * (Math.PI / 180)) * scalar;
         left.style.transform = `translate3d(${xVectorLeft}px, ${yVectorLeft}px, 0) rotate(${degLeft}deg)`;

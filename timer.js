@@ -18,8 +18,6 @@ var Timer = /** @class */ (function () {
     Timer.prototype.fixOptions = function () {
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
-        if (this.options.percentage >= 100)
-            this.options.percentage = 99.999;
     };
     Timer.prototype.init = function () {
         var _this = this;
@@ -217,7 +215,7 @@ var Timer = /** @class */ (function () {
                 minutes: 24,
                 seconds: 42
             },
-            percentage: 99.999,
+            percentage: 100,
             showEdges: true
         };
     };

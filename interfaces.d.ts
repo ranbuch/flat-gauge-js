@@ -13,6 +13,7 @@ export interface CircleOptions {
     animationDuration?: number;
     backgroundColor?: string;
     hideBottom: boolean;
+    indent?: number;
 }
 export interface SpinnerOptions {
     colors?: ColorPalette;
@@ -112,6 +113,7 @@ export interface EdgesOptions {
     strokeWidth: number;
     animationDuration?: number;
     hollowEdges?: SideState;
+    indent?: number;
 }
 export interface IconOptions {
     degree: number;
@@ -143,6 +145,8 @@ export interface AmPmOptions {
     strokeWidth?: number;
     hollowEdgesAm?: SideState;
     hollowEdgesPm?: SideState;
+    showEdgesAm?: boolean;
+    showEdgesPm?: boolean;
 }
 export interface FromTo {
     from: number;

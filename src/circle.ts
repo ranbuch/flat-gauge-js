@@ -33,6 +33,8 @@ export class Circle {
 
     public update(options: CircleOptions): void {
         this.options = this.common.extend(this.options, options);
+        if (typeof this.options.indent === 'undefined')
+            this.options.indent = 50;
         this.updateOptions();
     }
 
@@ -42,7 +44,9 @@ export class Circle {
     }
 
     setSvg(options: CircleOptions): void {
-        let startAngle = (options.fromDegree - 50) * 3.6, endAngle = (options.toDegree - 50) * 3.6;
+        if (options.toDegree - options.fromDegree == 100)
+            options.toDegree -= 0.0001;
+        let startAngle = (options.fromDegree - this.options.indent) * 3.6, endAngle = (options.toDegree - this.options.indent) * 3.6;
         let d = this.describeArc(options.radius, options.radius, options.radius - (options.strokeWidth / 2), startAngle, endAngle);
 
         let svg = this.element.querySelector('svg');
@@ -56,7 +60,8 @@ export class Circle {
         let path = svg.querySelector('[data-arc]');
         path.setAttributeNS(null, 'stroke', options.colors.active);
         path.setAttributeNS(null, 'stroke-width', options.strokeWidth);
-        path.setAttributeNS(null, 'd', d);
+        if (d.indexOf('NaN') == -1)
+            path.setAttributeNS(null, 'd', d);
         path.style.strokeWidth = options.strokeWidth + 'px';
         path.style.transitionDuration = options.animationDuration;
 

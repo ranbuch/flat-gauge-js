@@ -16,8 +16,6 @@ export class Spinner {
 
         // override defaults with user options
         this.options = this.common.extend(defaultOptions, options);
-        if (this.options.activeDegree == 100)
-            this.options.activeDegree = 99.9999;
 
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
@@ -43,8 +41,6 @@ export class Spinner {
 
     public update(options: SpinnerOptions): void {
         this.options = this.common.extend(this.options, options);
-        if (this.options.activeDegree == 100)
-            this.options.activeDegree = 99.9999;
         this.options.title = this.common.setInnerTextDefaults(this.options.title);
         this.updateOptions();
     }

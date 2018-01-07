@@ -21,6 +21,7 @@ var Circle = /** @class */function () {
     };
     Circle.prototype.update = function (options) {
         this.options = this.common.extend(this.options, options);
+        if (typeof this.options.indent === 'undefined') this.options.indent = 50;
         this.updateOptions();
     };
     Circle.prototype.updateOptions = function () {
@@ -28,8 +29,9 @@ var Circle = /** @class */function () {
         this.setElements(this.options);
     };
     Circle.prototype.setSvg = function (options) {
-        var startAngle = (options.fromDegree - 50) * 3.6,
-            endAngle = (options.toDegree - 50) * 3.6;
+        if (options.toDegree - options.fromDegree == 100) options.toDegree -= 0.0001;
+        var startAngle = (options.fromDegree - this.options.indent) * 3.6,
+            endAngle = (options.toDegree - this.options.indent) * 3.6;
         var d = this.describeArc(options.radius, options.radius, options.radius - options.strokeWidth / 2, startAngle, endAngle);
         var svg = this.element.querySelector('svg');
         var dim = options.radius * 2;
@@ -42,7 +44,7 @@ var Circle = /** @class */function () {
         var path = svg.querySelector('[data-arc]');
         path.setAttributeNS(null, 'stroke', options.colors.active);
         path.setAttributeNS(null, 'stroke-width', options.strokeWidth);
-        path.setAttributeNS(null, 'd', d);
+        if (d.indexOf('NaN') == -1) path.setAttributeNS(null, 'd', d);
         path.style.strokeWidth = options.strokeWidth + 'px';
         path.style.transitionDuration = options.animationDuration;
         var concealer = svg.querySelector('[data-concealer]');
@@ -442,7 +444,6 @@ var Spinner = /** @class */function () {
         var defaultOptions = this.getDefaultOptions();
         // override defaults with user options
         this.options = this.common.extend(defaultOptions, options);
-        if (this.options.activeDegree == 100) this.options.activeDegree = 99.9999;
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
         this.init();
@@ -464,7 +465,6 @@ var Spinner = /** @class */function () {
     };
     Spinner.prototype.update = function (options) {
         this.options = this.common.extend(this.options, options);
-        if (this.options.activeDegree == 100) this.options.activeDegree = 99.9999;
         this.options.title = this.common.setInnerTextDefaults(this.options.title);
         this.updateOptions();
     };

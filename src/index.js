@@ -31,23 +31,21 @@ var AmPm = /** @class */function () {
         if (parseInt(arrFrom[0]) >= 12 || parseInt(arrTo[0]) >= 12) {
             toMinutes = this.common.getMinutesFromHour(this.options.fromTo.to);
         }
+        console.log('fromMinutes: ' + fromMinutes);
+        console.log('toMinutes: ' + toMinutes);
         var max = 60 * 12;
-        if (fromMinutes > 0) {
-            from = this.common.getMinutesFromStart(this.options.fromTo.from, 0);
-            to = this.common.getMinutesFromStart(this.options.fromTo.to, 0);
-            this.minMaxValAm = {
-                from: from / max * 100,
-                to: Math.min(to / max * 100, 100)
-            };
-        }
-        if (toMinutes > 0) {
-            from = this.common.getMinutesFromStart(this.options.fromTo.from, 60 * 12);
-            to = this.common.getMinutesFromStart(this.options.fromTo.to, 60 * 12);
-            this.minMaxValPm = {
-                from: from / max * 100,
-                to: Math.min(to / max * 100, 100)
-            };
-        }
+        from = this.common.getMinutesFromStart(this.options.fromTo.from, 0);
+        to = this.common.getMinutesFromStart(this.options.fromTo.to, 0);
+        this.minMaxValAm = {
+            from: from / max * 100,
+            to: Math.min(to / max * 100, 100)
+        };
+        from = this.common.getMinutesFromStart(this.options.fromTo.from, 60 * 12);
+        to = this.common.getMinutesFromStart(this.options.fromTo.to, 60 * 12);
+        this.minMaxValPm = {
+            from: from / max * 100,
+            to: Math.min(to / max * 100, 100)
+        };
         this.lower = [];
         this.higher = [];
         this.lower.push({
@@ -219,8 +217,11 @@ var AmPm = /** @class */function () {
         var _this = this;
         var setCircle = function setCircle(prefix) {
             _this['circleOptions' + prefix] = _this.common.extend(_this.options, _this['circleOptions' + prefix], true);
-            _this['circleOptions' + prefix].fromDegree = _this.options.needleOptions.minMaxVal.min;
-            _this['circleOptions' + prefix].toDegree = _this.options.needleOptions.minMaxVal.max;
+            _this['circleOptions' + prefix].indent = 0;
+            _this['circleOptions' + prefix].fromDegree = _this['minMaxVal' + prefix].from;
+            _this['circleOptions' + prefix].toDegree = _this['minMaxVal' + prefix].to;
+            // this['circleOptions' + prefix].fromDegree = this.options.needleOptions.minMaxVal.min;
+            // this['circleOptions' + prefix].toDegree = this.options.needleOptions.minMaxVal.max;
             _this['circleOptions' + prefix].backgroundColor = _this.common.getComputedStyleByParentRec(_this.element, 'backgroundColor');
             if (!_this['circleOptions' + prefix].backgroundColor) _this['circleOptions' + prefix].backgroundColor = '#fff';
             if (prefix == 'Am') _this['circleOptions' + prefix].radius = _this.options.radius - _this.options.strokeWidth;
@@ -238,16 +239,18 @@ var AmPm = /** @class */function () {
             _this['edgesOptions' + prefix].strokeWidth = _this.options.strokeWidth;
             _this['edgesOptions' + prefix].color = _this.options.colors.active;
             _this['edgesOptions' + prefix].hollowEdges = _this.options['hollowEdges' + +prefix];
+            _this['edgesOptions' + prefix].minMaxVal = {
+                min: _this['minMaxVal' + prefix].from,
+                max: _this['minMaxVal' + prefix].to
+            };
+            _this['edgesOptions' + prefix].indent = 0;
             if (_this['edges' + prefix]) _this['edges' + prefix].update(_this['edgesOptions' + prefix]);else _this['edges' + prefix] = new edges_1.Edges(_this['edgesOptions' + prefix]);
-            var left = _this.element.querySelector('[data-left-edge]');
-            var right = _this.element.querySelector('[data-right-edge]');
-            if (left && right) {
-                if (!_this.options['showEdges' + prefix]) {
-                    left.style.display = 'none';
-                    right.style.display = 'none';
-                } else {
-                    left.style.display = 'inline-block';
-                    right.style.display = 'inline-block';
+            var allEdges = _this.element.querySelectorAll('[data-' + prefix + '-wrap] [data-left-edge],[data-' + prefix + '-wrap] [data-right-edge]');
+            if (allEdges.length) {
+                var disp = 'inline-block';
+                if (!_this.options['showEdges' + prefix]) disp = 'none';
+                for (var i = 0; i < allEdges.length; i++) {
+                    allEdges[i].style.display = disp;
                 }
             }
         };
@@ -295,8 +298,8 @@ var AmPm = /** @class */function () {
         var colors = this.common.getDefaultColors();
         return {
             fromTo: {
-                from: '3:52',
-                to: '14:20'
+                from: '0:0',
+                to: '23:60'
             },
             radius: radius,
             colors: colors,
@@ -342,6 +345,7 @@ var Circle = /** @class */function () {
     };
     Circle.prototype.update = function (options) {
         this.options = this.common.extend(this.options, options);
+        if (typeof this.options.indent === 'undefined') this.options.indent = 50;
         this.updateOptions();
     };
     Circle.prototype.updateOptions = function () {
@@ -349,8 +353,9 @@ var Circle = /** @class */function () {
         this.setElements(this.options);
     };
     Circle.prototype.setSvg = function (options) {
-        var startAngle = (options.fromDegree - 50) * 3.6,
-            endAngle = (options.toDegree - 50) * 3.6;
+        if (options.toDegree - options.fromDegree == 100) options.toDegree -= 0.0001;
+        var startAngle = (options.fromDegree - this.options.indent) * 3.6,
+            endAngle = (options.toDegree - this.options.indent) * 3.6;
         var d = this.describeArc(options.radius, options.radius, options.radius - options.strokeWidth / 2, startAngle, endAngle);
         var svg = this.element.querySelector('svg');
         var dim = options.radius * 2;
@@ -363,7 +368,7 @@ var Circle = /** @class */function () {
         var path = svg.querySelector('[data-arc]');
         path.setAttributeNS(null, 'stroke', options.colors.active);
         path.setAttributeNS(null, 'stroke-width', options.strokeWidth);
-        path.setAttributeNS(null, 'd', d);
+        if (d.indexOf('NaN') == -1) path.setAttributeNS(null, 'd', d);
         path.style.strokeWidth = options.strokeWidth + 'px';
         path.style.transitionDuration = options.animationDuration;
         var concealer = svg.querySelector('[data-concealer]');
@@ -766,7 +771,8 @@ var Edges = /** @class */function () {
             strokeWidth: 6,
             animationDuration: animationDuration,
             hollowEdges: interfaces_1.SideState.None,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            indent: 50
         };
     };
     Edges.prototype.init = function () {
@@ -831,8 +837,8 @@ var Edges = /** @class */function () {
             yVectorLeft,
             xVectorRight,
             yVectorRight;
-        var degLeft = (options.minMaxVal.min - 50) * 3.6;
-        var degRight = (options.minMaxVal.max - 50) * 3.6;
+        var degLeft = (options.minMaxVal.min - this.options.indent) * 3.6;
+        var degRight = (options.minMaxVal.max - this.options.indent) * 3.6;
         xVectorLeft = Math.sin(degLeft * (Math.PI / 180)) * scalar;
         yVectorLeft = -Math.cos(degLeft * (Math.PI / 180)) * scalar;
         left.style.transform = "translate3d(" + xVectorLeft + "px, " + yVectorLeft + "px, 0) rotate(" + degLeft + "deg)";
@@ -1393,7 +1399,6 @@ var Spinner = /** @class */function () {
         var defaultOptions = this.getDefaultOptions();
         // override defaults with user options
         this.options = this.common.extend(defaultOptions, options);
-        if (this.options.activeDegree == 100) this.options.activeDegree = 99.9999;
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
         this.init();
@@ -1415,7 +1420,6 @@ var Spinner = /** @class */function () {
     };
     Spinner.prototype.update = function (options) {
         this.options = this.common.extend(this.options, options);
-        if (this.options.activeDegree == 100) this.options.activeDegree = 99.9999;
         this.options.title = this.common.setInnerTextDefaults(this.options.title);
         this.updateOptions();
     };
@@ -1507,7 +1511,6 @@ var Timer = /** @class */function () {
     Timer.prototype.fixOptions = function () {
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
-        if (this.options.percentage >= 100) this.options.percentage = 99.999;
     };
     Timer.prototype.init = function () {
         var _this = this;
@@ -1686,7 +1689,7 @@ var Timer = /** @class */function () {
                 minutes: 24,
                 seconds: 42
             },
-            percentage: 99.999,
+            percentage: 100,
             showEdges: true
         };
     };

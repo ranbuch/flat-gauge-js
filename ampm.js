@@ -26,23 +26,21 @@ var AmPm = /** @class */ (function () {
         if (parseInt(arrFrom[0]) >= 12 || parseInt(arrTo[0]) >= 12) {
             toMinutes = this.common.getMinutesFromHour(this.options.fromTo.to);
         }
+        console.log('fromMinutes: ' + fromMinutes);
+        console.log('toMinutes: ' + toMinutes);
         var max = 60 * 12;
-        if (fromMinutes > 0) {
-            from = this.common.getMinutesFromStart(this.options.fromTo.from, 0);
-            to = this.common.getMinutesFromStart(this.options.fromTo.to, 0);
-            this.minMaxValAm = {
-                from: from / max * 100,
-                to: Math.min(to / max * 100, 100)
-            };
-        }
-        if (toMinutes > 0) {
-            from = this.common.getMinutesFromStart(this.options.fromTo.from, 60 * 12);
-            to = this.common.getMinutesFromStart(this.options.fromTo.to, 60 * 12);
-            this.minMaxValPm = {
-                from: from / max * 100,
-                to: Math.min(to / max * 100, 100)
-            };
-        }
+        from = this.common.getMinutesFromStart(this.options.fromTo.from, 0);
+        to = this.common.getMinutesFromStart(this.options.fromTo.to, 0);
+        this.minMaxValAm = {
+            from: from / max * 100,
+            to: Math.min(to / max * 100, 100)
+        };
+        from = this.common.getMinutesFromStart(this.options.fromTo.from, 60 * 12);
+        to = this.common.getMinutesFromStart(this.options.fromTo.to, 60 * 12);
+        this.minMaxValPm = {
+            from: from / max * 100,
+            to: Math.min(to / max * 100, 100)
+        };
         this.lower = [];
         this.higher = [];
         this.lower.push({
@@ -234,8 +232,11 @@ var AmPm = /** @class */ (function () {
         var _this = this;
         var setCircle = function (prefix) {
             _this['circleOptions' + prefix] = _this.common.extend(_this.options, _this['circleOptions' + prefix], true);
-            _this['circleOptions' + prefix].fromDegree = _this.options.needleOptions.minMaxVal.min;
-            _this['circleOptions' + prefix].toDegree = _this.options.needleOptions.minMaxVal.max;
+            _this['circleOptions' + prefix].indent = 0;
+            _this['circleOptions' + prefix].fromDegree = _this['minMaxVal' + prefix].from;
+            _this['circleOptions' + prefix].toDegree = _this['minMaxVal' + prefix].to;
+            // this['circleOptions' + prefix].fromDegree = this.options.needleOptions.minMaxVal.min;
+            // this['circleOptions' + prefix].toDegree = this.options.needleOptions.minMaxVal.max;
             _this['circleOptions' + prefix].backgroundColor = _this.common.getComputedStyleByParentRec(_this.element, 'backgroundColor');
             if (!_this['circleOptions' + prefix].backgroundColor)
                 _this['circleOptions' + prefix].backgroundColor = '#fff';
@@ -257,20 +258,22 @@ var AmPm = /** @class */ (function () {
             _this['edgesOptions' + prefix].strokeWidth = _this.options.strokeWidth;
             _this['edgesOptions' + prefix].color = _this.options.colors.active;
             _this['edgesOptions' + prefix].hollowEdges = _this.options['hollowEdges' + +prefix];
+            _this['edgesOptions' + prefix].minMaxVal = {
+                min: _this['minMaxVal' + prefix].from,
+                max: _this['minMaxVal' + prefix].to
+            };
+            _this['edgesOptions' + prefix].indent = 0;
             if (_this['edges' + prefix])
                 _this['edges' + prefix].update(_this['edgesOptions' + prefix]);
             else
                 _this['edges' + prefix] = new edges_1.Edges(_this['edgesOptions' + prefix]);
-            var left = _this.element.querySelector('[data-left-edge]');
-            var right = _this.element.querySelector('[data-right-edge]');
-            if (left && right) {
-                if (!_this.options['showEdges' + prefix]) {
-                    left.style.display = 'none';
-                    right.style.display = 'none';
-                }
-                else {
-                    left.style.display = 'inline-block';
-                    right.style.display = 'inline-block';
+            var allEdges = _this.element.querySelectorAll('[data-' + prefix + '-wrap] [data-left-edge],[data-' + prefix + '-wrap] [data-right-edge]');
+            if (allEdges.length) {
+                var disp = 'inline-block';
+                if (!_this.options['showEdges' + prefix])
+                    disp = 'none';
+                for (var i = 0; i < allEdges.length; i++) {
+                    allEdges[i].style.display = disp;
                 }
             }
         };
@@ -318,8 +321,8 @@ var AmPm = /** @class */ (function () {
         var colors = this.common.getDefaultColors();
         return {
             fromTo: {
-                from: '3:52',
-                to: '14:20'
+                from: '0:0',
+                to: '23:60'
             },
             radius: radius,
             colors: colors,
