@@ -26,8 +26,6 @@ var AmPm = /** @class */ (function () {
         if (parseInt(arrFrom[0]) >= 12 || parseInt(arrTo[0]) >= 12) {
             toMinutes = this.common.getMinutesFromHour(this.options.fromTo.to);
         }
-        console.log('fromMinutes: ' + fromMinutes);
-        console.log('toMinutes: ' + toMinutes);
         var max = 60 * 12;
         from = this.common.getMinutesFromStart(this.options.fromTo.from, 0);
         to = this.common.getMinutesFromStart(this.options.fromTo.to, 0);
@@ -79,14 +77,29 @@ var AmPm = /** @class */ (function () {
             this.needleOptions.color = this.common.isInRange(this.options.needleOptions.minMaxVal, (isAm ? this.edgesOptionsAm.hollowEdges : this.edgesOptionsPm.hollowEdges)) ? this.options.colors.active : this.options.colors["default"];
         if (this.options.needleOptions.minMaxVal.value > 100 || this.options.needleOptions.minMaxVal.value < 0)
             this.needleOptions.color = this.options.colors.inactive;
-        for (var i = 0; i < relevantHours.length; i++) {
-            if (relevantHours[i].isActive) {
-                var current = (i * (100 / 12)) + relevantHours[i].remainder;
-                if (this.needleOptions.minMaxVal.min === null)
-                    this.needleOptions.minMaxVal.min = current;
-                this.needleOptions.minMaxVal.max = current;
-            }
+        var dateTime = new Date();
+        this.needleOptions.minMaxVal.value = this.common.getPercentageByTime(dateTime);
+        if (this.needleOptions.minMaxVal.value > 50) {
         }
+        else {
+            this.needleOptions.scale = 0.85;
+        }
+        this.needleOptions.minMaxVal.value /= 2;
+        var index = dateTime.getHours();
+        if (index > 11)
+            index -= 12;
+        if (relevantHours[index].isActive)
+            this.needleOptions.color = this.options.colors.active;
+        else
+            this.needleOptions.color = this.options.colors["default"];
+        // for (let i = 0; i < relevantHours.length; i++) {
+        //     if (relevantHours[i].isActive) {
+        //         let current = (i * (100 / 12)) + relevantHours[i].remainder;
+        //         if (this.needleOptions.minMaxVal.min === null)
+        //             this.needleOptions.minMaxVal.min = current;
+        //         this.needleOptions.minMaxVal.max = current;
+        //     }
+        // }
         if (this.needle)
             this.needle.update(this.needleOptions);
         else

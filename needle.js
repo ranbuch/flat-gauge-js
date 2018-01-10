@@ -56,7 +56,7 @@ var Needle = /** @class */ (function () {
     };
     Needle.prototype.setDiv = function (options) {
         var div = this.element;
-        var divStyle = this.common.getNeedleStyle(options.radius, options.minMaxVal.value, options.scale);
+        var divStyle = this.common.getNeedleStyle(options.radius, options.minMaxVal.value, options.scale, options.indent);
         div.style.left = divStyle.left;
         div.style.transform = divStyle.transform;
         div.style.transitionDuration = options.animationDuration + 'ms';

@@ -131,10 +131,11 @@ var Common = /** @class */ (function () {
             'width': (radius / Common.needleWidthHeightRatio) + 'px'
         };
     };
-    Common.prototype.getNeedleStyle = function (radius, arcNeedlePercentage, scale) {
+    Common.prototype.getNeedleStyle = function (radius, arcNeedlePercentage, scale, indent) {
+        if (indent === void 0) { indent = 50; }
         if (typeof scale !== 'number')
             scale = 1.125;
-        var deg = (arcNeedlePercentage - 50) * 3.6;
+        var deg = (arcNeedlePercentage - indent) * 3.6;
         return {
             'left': 'calc(50% - ' + ((radius / Common.needleWidthHeightRatio)) / 2 + 'px',
             'transform': 'rotate(' + deg + 'deg) scale(' + scale + ')'
@@ -190,6 +191,22 @@ var Common = /** @class */ (function () {
         if (current >= range.from && current <= range.to)
             return true;
         return false;
+    };
+    Common.prototype.getPercentageByTime = function (dateTime) {
+        var secondsInADay = 86400; //24 * 60 * 60;
+        var hours = dateTime.getHours() * 3600; //60 * 60;
+        var minutes = dateTime.getMinutes() * 60;
+        var seconds = dateTime.getSeconds();
+        var totalSeconds = hours + minutes + seconds;
+        var percentSeconds = 100 * totalSeconds / secondsInADay;
+        return percentSeconds;
+        // let max = 86400000; // 1000 * 60 * 60 * 24 is the number of milliseconds on a 24 hours day.
+        // let hours = dateTime.getHours();
+        // let minutes = dateTime.getMinutes();
+        // let seconds = dateTime.getSeconds();
+        // let total = (hours * 1000 * 60 * 60) + (minutes * 1000 * 60) + (seconds * 1000);
+        // let percentage = total / max;
+        // return percentage * 100;
     };
     Common.prototype.getMinutesFromHour = function (hour) {
         var arr = hour.split(':');

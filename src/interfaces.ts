@@ -64,6 +64,7 @@ export interface NeedleOptions {
     scale: number;
     animationDuration?: number;
     disabled?: boolean;
+    indent?: number;
 }
 
 export interface TuneOptions {

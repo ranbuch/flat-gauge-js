@@ -65,7 +65,7 @@ export class Needle {
 
     setDiv(options: NeedleOptions): void {
         let div = this.element;
-        let divStyle = this.common.getNeedleStyle(options.radius, options.minMaxVal.value, options.scale);
+        let divStyle = this.common.getNeedleStyle(options.radius, options.minMaxVal.value, options.scale, options.indent);
         div.style.left = divStyle.left;
         div.style.transform = divStyle.transform;
         div.style.transitionDuration = options.animationDuration + 'ms';

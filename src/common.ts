@@ -144,10 +144,10 @@ export class Common {
         };
     }
 
-    getNeedleStyle(radius: number, arcNeedlePercentage: number, scale: number) {
+    getNeedleStyle(radius: number, arcNeedlePercentage: number, scale: number, indent: number = 50) {
         if (typeof scale !== 'number')
             scale = 1.125;
-        let deg = (arcNeedlePercentage - 50) * 3.6;
+        let deg = (arcNeedlePercentage - indent) * 3.6;
         return {
             'left': 'calc(50% - ' + ((radius / Common.needleWidthHeightRatio)) / 2 + 'px',
             'transform': 'rotate(' + deg + 'deg) scale(' + scale + ')'
@@ -168,7 +168,7 @@ export class Common {
             case SideState.Right: {
                 return (minMaxVal.min <= minMaxVal.value && minMaxVal.max > minMaxVal.value);
             }
-        }    
+        }
     }
 
     normalizeByPercentage(value: number, percentage: number, mid?: number, max?: number): number {
@@ -207,6 +207,23 @@ export class Common {
         let current = 100 / 12 * hour;
         if (current >= range.from && current <= range.to) return true;
         return false;
+    }
+
+    getPercentageByTime(dateTime: Date): number {
+        let secondsInADay = 86400; //24 * 60 * 60;
+        let hours = dateTime.getHours() * 3600; //60 * 60;
+        let minutes = dateTime.getMinutes() * 60;
+        let seconds = dateTime.getSeconds();
+        let totalSeconds = hours + minutes + seconds;
+        let percentSeconds = 100 * totalSeconds / secondsInADay;
+        return percentSeconds;
+        // let max = 86400000; // 1000 * 60 * 60 * 24 is the number of milliseconds on a 24 hours day.
+        // let hours = dateTime.getHours();
+        // let minutes = dateTime.getMinutes();
+        // let seconds = dateTime.getSeconds();
+        // let total = (hours * 1000 * 60 * 60) + (minutes * 1000 * 60) + (seconds * 1000);
+        // let percentage = total / max;
+        // return percentage * 100;
     }
 
     getMinutesFromHour(hour: string) {

@@ -16,7 +16,7 @@ export declare class Common {
     fixRadius(r: number): number;
     getDefaultColors(): ColorPalette;
     getNeedleInnerStyle(radius: number): any;
-    getNeedleStyle(radius: number, arcNeedlePercentage: number, scale: number): {
+    getNeedleStyle(radius: number, arcNeedlePercentage: number, scale: number, indent?: number): {
         'left': string;
         'transform': string;
     };
@@ -24,6 +24,7 @@ export declare class Common {
     normalizeByPercentage(value: number, percentage: number, mid?: number, max?: number): number;
     getRemainder(range: FromTo, hour: number): number;
     isHourInRange(range: FromTo, hour: number): boolean;
+    getPercentageByTime(dateTime: Date): number;
     getMinutesFromHour(hour: string): number;
     getMinutesFromStart(hour: string, start?: number): number;
     getHoursAndMinutesLT(date: Date): string;
