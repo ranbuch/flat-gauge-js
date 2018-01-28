@@ -1621,12 +1621,13 @@ var Timer = /** @class */function () {
     };
     Timer.prototype.updateTimer = function () {
         var _this = this;
+        console.log('updateTimer');
         this.updatePercentage();
         if (this.common.decreaseTime(this.options.time)) {
             // TODO time is up!
             // this.status = 'Time is up!';
             // return this.mode = '';
-        } else {
+        } else if (this.element.parentElement) {
             setTimeout(function () {
                 _this.updateTimer();
             }, 1000);

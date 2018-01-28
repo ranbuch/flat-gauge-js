@@ -132,6 +132,8 @@ export class Timer {
 
     updatePercentage() {
         this.options.percentage = this.common.getSecondsFromTime(this.options.time) / this.fullSeconds * 100;
+        if (isNaN(this.options.percentage) || this.options.percentage < 0)
+            this.options.percentage = 0;
     }
 
     updateTimer() {
@@ -141,7 +143,7 @@ export class Timer {
             // this.status = 'Time is up!';
             // return this.mode = '';
         }
-        else {
+        else if (this.element.parentElement) { // check if element is still in DOM
             setTimeout(() => {
                 this.updateTimer();
             }, 1000);

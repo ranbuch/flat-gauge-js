@@ -3,8 +3,8 @@ window.addEventListener('load', function() {
   window.timer = new FlatGauge.Timer(target, {
     animationDuration: 500,
     time: {
-        hours: 2,
-        minutes: 45,
+        hours: 0,
+        minutes: 0,
         seconds: 3
     },
     percentage: 33
