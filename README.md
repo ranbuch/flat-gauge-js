@@ -1,7 +1,5 @@
 # flat-gauge-js
 
-### not ready for use yet (WIP) . . .
-
 ## installation
 npm
 ```
