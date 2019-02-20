@@ -12,7 +12,9 @@ export class Timer {
     private edgesOptions: EdgesOptions;
     private edges: Edges;
     private fullSeconds: number;
+    private isRunning: boolean;
     constructor(element: any, options?: TimerOptions) {
+        this.isRunning = true;
         this.element = element;
         this.common = new Common();
         // set default options
@@ -137,6 +139,7 @@ export class Timer {
     }
 
     updateTimer() {
+        if (!this.isRunning) return;
         this.updatePercentage();
         if (this.common.decreaseTime(this.options.time)) {
             // TODO time is up!
@@ -264,5 +267,14 @@ export class Timer {
             this.circle.update(this.circleOptions);
         else
             this.circle = new Circle(this.circleOptions);
+    }
+
+    pause() {
+        this.isRunning = false;
+    }
+
+    play() {
+        this.isRunning = true;
+        this.updateTimer();
     }
 }

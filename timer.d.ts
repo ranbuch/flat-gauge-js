@@ -8,6 +8,7 @@ export declare class Timer {
     private edgesOptions;
     private edges;
     private fullSeconds;
+    private isRunning;
     constructor(element: any, options?: TimerOptions);
     fixOptions(): void;
     init(): void;
@@ -20,4 +21,6 @@ export declare class Timer {
     setTitle(options: TimerOptions): void;
     getDefaultOptions(): TimerOptions;
     setCircle(): void;
+    pause(): void;
+    play(): void;
 }

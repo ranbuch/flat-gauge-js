@@ -5,6 +5,7 @@ var circle_1 = require("./circle");
 var edges_1 = require("./edges");
 var Timer = /** @class */ (function () {
     function Timer(element, options) {
+        this.isRunning = true;
         this.element = element;
         this.common = new common_1.Common();
         // set default options
@@ -109,10 +110,13 @@ var Timer = /** @class */ (function () {
     };
     Timer.prototype.updatePercentage = function () {
         this.options.percentage = this.common.getSecondsFromTime(this.options.time) / this.fullSeconds * 100;
+        if (isNaN(this.options.percentage) || this.options.percentage < 0)
+            this.options.percentage = 0;
     };
     Timer.prototype.updateTimer = function () {
         var _this = this;
-        console.log('updateTimer');
+        if (!this.isRunning)
+            return;
         this.updatePercentage();
         if (this.common.decreaseTime(this.options.time)) {
             // TODO time is up!
@@ -231,6 +235,13 @@ var Timer = /** @class */ (function () {
             this.circle.update(this.circleOptions);
         else
             this.circle = new circle_1.Circle(this.circleOptions);
+    };
+    Timer.prototype.pause = function () {
+        this.isRunning = false;
+    };
+    Timer.prototype.play = function () {
+        this.isRunning = true;
+        this.updateTimer();
     };
     return Timer;
 }());

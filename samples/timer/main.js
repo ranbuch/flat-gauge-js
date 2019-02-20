@@ -9,4 +9,12 @@ window.addEventListener('load', function() {
     },
     percentage: 33
   });
+
+  document.querySelector('#pause').addEventListener('click', function() {
+    window.timer.pause();
+  }, false);
+
+  document.querySelector('#play').addEventListener('click', function() {
+    window.timer.play();
+  }, false);
 })
