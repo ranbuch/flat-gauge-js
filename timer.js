@@ -241,7 +241,6 @@ var Timer = /** @class */ (function () {
     };
     Timer.prototype.play = function () {
         this.isRunning = true;
-        this.updateTimer();
     };
     return Timer;
 }());

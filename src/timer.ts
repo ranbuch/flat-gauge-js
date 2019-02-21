@@ -275,6 +275,5 @@ export class Timer {
 
     play() {
         this.isRunning = true;
-        this.updateTimer();
     }
 }
