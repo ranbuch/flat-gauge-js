@@ -1541,6 +1541,9 @@ var Timer = /** @class */function () {
     Timer.prototype.fixOptions = function () {
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
+        if (typeof this.options.percentage === 'number') {
+            if (this.options.percentage > 100) this.options.percentage = 100;else if (this.options.percentage < 0) this.options.percentage = 0;
+        }
     };
     Timer.prototype.init = function () {
         var _this = this;
@@ -1614,7 +1617,7 @@ var Timer = /** @class */function () {
     Timer.prototype.update = function (options) {
         this.options = this.common.extend(this.options, options);
         this.fixOptions();
-        // this.fixOptions();
+        this.updatePercentage();
         this.updateOptions(true);
     };
     Timer.prototype.updatePercentage = function () {

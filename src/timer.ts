@@ -33,6 +33,12 @@ export class Timer {
     fixOptions() {
         this.options.strokeWidth = this.common.fixStrokeWidth(this.options.strokeWidth);
         this.options.radius = this.common.fixRadius(this.options.radius);
+        if (typeof this.options.percentage === 'number') {
+            if (this.options.percentage > 100)
+                this.options.percentage = 100;
+            else if (this.options.percentage < 0)
+                this.options.percentage = 0;
+        }
     }
 
     init() {
@@ -128,7 +134,7 @@ export class Timer {
     public update(options: TimerOptions): void {
         this.options = this.common.extend(this.options, options);
         this.fixOptions();
-        // this.fixOptions();
+        this.updatePercentage();
         this.updateOptions(true);
     }
 
