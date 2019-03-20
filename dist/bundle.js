@@ -1610,6 +1610,7 @@ var Timer = /** @class */function () {
         innerElem.appendChild(this.edges.getRightElement());
         this.element.appendChild(innerElem);
         this.updateOptions(true);
+        this.lastInterval = Date.now();
         setTimeout(function () {
             _this.updateTimer();
         }, 1000);
@@ -1633,9 +1634,12 @@ var Timer = /** @class */function () {
             // this.status = 'Time is up!';
             // return this.mode = '';
         } else if (this.element.parentElement) {
+            var now = Date.now();
+            var accurate = 1000 + (this.lastInterval - now);
             setTimeout(function () {
                 _this.updateTimer();
-            }, 1000);
+            }, accurate + 1000);
+            this.lastInterval = now;
         }
         this.updateOptions(true);
     };

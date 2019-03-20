@@ -9,6 +9,7 @@ export declare class Timer {
     private edges;
     private fullSeconds;
     private isRunning;
+    private lastInterval;
     constructor(element: any, options?: TimerOptions);
     fixOptions(): void;
     init(): void;

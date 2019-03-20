@@ -13,6 +13,7 @@ export class Timer {
     private edges: Edges;
     private fullSeconds: number;
     private isRunning: boolean;
+    private lastInterval: number;
     constructor(element: any, options?: TimerOptions) {
         this.isRunning = true;
         this.element = element;
@@ -126,6 +127,7 @@ export class Timer {
 
         this.updateOptions(true);
 
+        this.lastInterval = Date.now();
         setTimeout(() => {
             this.updateTimer();
         }, 1000);
@@ -153,9 +155,12 @@ export class Timer {
             // return this.mode = '';
         }
         else if (this.element.parentElement) { // check if element is still in DOM
+            const now = Date.now();
+            const accurate = 1000 + (this.lastInterval - now);
             setTimeout(() => {
                 this.updateTimer();
-            }, 1000);
+            }, accurate + 1000);
+            this.lastInterval = now;
         }
         this.updateOptions(true);
     }

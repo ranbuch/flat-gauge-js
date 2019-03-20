@@ -5,7 +5,7 @@ window.addEventListener('load', function() {
     time: {
         hours: 0,
         minutes: 0,
-        seconds: 3
+        seconds: 33
     },
     percentage: 33
   });
